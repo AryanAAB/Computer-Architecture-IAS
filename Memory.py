@@ -38,6 +38,8 @@ class Memory:
         if(len(memory) != 1000):
             printErrorAndExit("The memory length is not 1000.")
         
+        memory = [i.strip() for i in memory]
+
         for i in memory:
             if(len(i) != 40):
                 printErrorAndExit(f"Line {i} is not of length 40.")
