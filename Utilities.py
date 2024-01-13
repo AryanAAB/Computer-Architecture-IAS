@@ -1,4 +1,28 @@
 import sys
+from enum import Enum
+
+class Opcode(Enum):
+    LOAD_MQ            = "00001010"    
+    LOAD_MQ_MX         = "00001001"
+    STOR_MX            = "00100001"
+    LOAD_MX            = "00000001"
+    LOAD_NEG_MX        = "00000010"
+    LOAD_ABS_MX        = "00000011"
+    LOAD_NEG_ABS_MX    = "00000100"
+    JUMP_MX_0_19       = "00001101"
+    JUMP_MX_20_39      = "00001110"
+    JUMP_PLUS_MX_0_19  = "00001111"
+    JUMP_PLUS_MX_20_39 = "00010000"
+    ADD_MX             = "00000101"
+    ADD_ABS_MX         = "00000111"
+    SUB_MX             = "00000110"
+    SUB_ABS_MX         = "00001000"
+    MUL_MX             = "00001011"
+    DIV_MX             = "00001100"
+    LSH                = "00010100"
+    RSH                = "00010101"
+    STOR_MX_8_19       = "00010010"
+    STOR_MX_28_39      = "00010011" 
 
 def checkType(checkList:list):
     """
