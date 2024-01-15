@@ -37,9 +37,9 @@ class Positions(Enum):
 
 class Status(Enum):
     #Declaring constants that specify status after execution
-    CONTINUE          = 0 # Continue means to continue processing the input
-    EXIT              = 1 # Exit means that we have reached HALT or end of PC has been reached
-    CLEAR_IBR         = 2 # Clear IBR means that we want to clear IBR because we don't want to execute the right statement
+    CONTINUE                    = 0 # Continue means to continue processing the input
+    EXIT                        = 1 # Exit means that we have reached HALT or end of PC has been reached
+    CLEAR_IBR                   = 2 # Clear IBR means that we want to clear IBR because we don't want to execute the right statement
 
 """
 Creates a PC, MAR, MBR, IBR, IR, AC, and MQ registers.
