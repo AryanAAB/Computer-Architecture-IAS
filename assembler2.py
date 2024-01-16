@@ -1,7 +1,4 @@
-
-
-def checkType(a):
-    return 0
+from Utilities import *
 
 class InstructionSet():
 
