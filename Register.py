@@ -7,7 +7,7 @@ class Register:
         
         ans=bin(self.__val)[2:]
         
-        while (len(ans)>self.__size):
+        while (len(ans)>self.__size): #There is a better way
             self.__val-=2**self.__size
             print("overflow")
             ans=bin(self.__val)[2:]
