@@ -40,9 +40,6 @@ class Assembler():
             printErrorAndExit("Invalid file type.")
         self.__fileName=fileName
         self.__IS=InstructionSet()
-        
-        self.__run()
-
 
 
     def __firstParse(self, lines):
@@ -94,29 +91,34 @@ class Assembler():
             """
                 This function prepares each memory location with the required instructions.
             """
-        
+            
             if len(lst)==1:
                 return addInstruct(lst[0])+("0"*20) + "\n"
             if lst[0]=='':
+                if lst[1]=='':
+                    return '0'*40
                 return ('0'*20)+addInstruct(lst[1]) + "\n"
             return addInstruct(lst[0]) + addInstruct(lst[1]) + "\n"
 
         z=('0'*40)+'\n'
         memory=[z for i in range(1000)]
         for i in lines:
+            
             temp=i.strip().split(";")
             temp=temp[:-1]
             pos=int(temp[0].split()[0])-1
             temp[0]=(" ".join(temp[0].split()[1:]))
+            
             if temp[0].isdigit():
                 memory[pos]=(addZeros(bin(int(temp[0]))[2:], 40)+"\n")
             else:
                 memory[pos]=checkInstruct(temp)
+                
         return memory
 
 
 
-    def __run(self):
+    def run(self):
 
         """
             This accesses the file and runs the assembler.
@@ -135,11 +137,12 @@ class Assembler():
         
         while self.__fileName[-1]!=".":
             self.__fileName=self.__fileName[:-1]
-        with open(f"{self.__fileName}obj", "w") as fileObject:
+        with open(f"{self.__fileName}exe", "w") as fileObject:
             fileObject.writelines(toDump)       
 
-
-""""__main__"""
 assembler=Assembler(input("Enter the file to be assembled:\n"))
+assembler.run()
+
+
 
 
