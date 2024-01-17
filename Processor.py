@@ -50,13 +50,13 @@ class HoldRegisters:
     """
 
     def __init__(self):
-        self.__PC  = Register(size = Positions.PC_END)  # declaring 12 bit Program Counter
-        self.__MAR = Register(size = Positions.MAR_END) # declaring 12 bit Memory Address Register
-        self.__MBR = Register(size = Positions.MBR_END) # declaring 40 bit Memory Buffer Register
-        self.__IBR = Register(size = Positions.IBR_END) # declaring 20 bit Instruction Buffer Register
-        self.__IR  = Register(size = Positions.IR_END)  # declaring 8 bit Instruction Register
-        self.__AC  = Register(size = Positions.AC_END)  # declaring 40 bit Accumulator
-        self.__MQ  = Register(size = Positions.MQ_END)  # declaring 40 bit Multiplier Quotient
+        self.__PC  = Register(size = Positions.PC_END.value)  # declaring 12 bit Program Counter
+        self.__MAR = Register(size = Positions.MAR_END.value) # declaring 12 bit Memory Address Register
+        self.__MBR = Register(size = Positions.MBR_END.value) # declaring 40 bit Memory Buffer Register
+        self.__IBR = Register(size = Positions.IBR_END.value) # declaring 20 bit Instruction Buffer Register
+        self.__IR  = Register(size = Positions.IR_END.value)  # declaring 8 bit Instruction Register
+        self.__AC  = Register(size = Positions.AC_END.value)  # declaring 40 bit Accumulator
+        self.__MQ  = Register(size = Positions.MQ_END.value)  # declaring 40 bit Multiplier Quotient
     
     def PC(self):
         """
@@ -117,6 +117,8 @@ class Processor:
         @param fileName : a string representing the file path consisting of the binary code.
         """
 
+        checkType([(fileName, str)])
+
         self.__memory = Memory(fileName=fileName)
         self.__registers = HoldRegisters()
         self.__control = Control()
@@ -167,22 +169,22 @@ class Processor:
 
         #Going from MBR to IBR
         print("Control signal generated : Right Instruction goes to IBR : IBR <-- MBR[20:39]")
-        self.__registers.IBR().write(self.__registers.MBR().read(Positions.MBR_RIGHT_INSTRUCTION_START, Positions.MBR_RIGHT_INSTRUCTION_END))
+        self.__registers.IBR().write(self.__registers.MBR().read(Positions.MBR_RIGHT_INSTRUCTION_START.value, Positions.MBR_RIGHT_INSTRUCTION_END.value))
         print("IBR :", self.__registers.IBR())
 
         #Going from MBR to IR
         print("Control signal generated : Left Opcode goes to IR : IR <-- MBR[0:7]")
-        self.__registers.IR().write(self.__registers.MBR().read(Positions.MBR_LEFT_OPCODE_START, Positions.MBR_LEFT_OPCODE_END))
+        self.__registers.IR().write(self.__registers.MBR().read(Positions.MBR_LEFT_OPCODE_START.value, Positions.MBR_LEFT_OPCODE_END.value))
         print("IR :", self.__registers.IR())
 
         #Going from MBR to MAR
         print("Control signal generated : Left Address goes to MAR : MAR <-- MBR[8:19]")
-        self.__registers.MAR().write(self.__registers.MBR().read(Positions.MBR_LEFT_ADDRESS_START, Positions.MBR_LEFT_ADDRESS_END))
+        self.__registers.MAR().write(self.__registers.MBR().read(Positions.MBR_LEFT_ADDRESS_START.value, Positions.MBR_LEFT_ADDRESS_END.value))
         print("MAR :", self.__registers.MAR())
 
         #PC = PC + 1
         print("Control signal generated : PC <-- PC + 1")
-        self.__registers.PC().increment()
+        self.__registers.PC().inc()
         print("PC :", self.__registers.PC())
 
         print("Values of all registers after Fetch Cycle")
@@ -200,8 +202,8 @@ class Processor:
         print("\nStart of Decode Cycle : ")
         try:
             print(f"Control signal generated : Decoding {self.__registers.IR()}.")
-            code = Opcode(self.__registers.IR()).name
-            print("Decoded Opcode :", code)
+            code = Opcode(str(self.__registers.IR()))
+            print("Decoded Opcode :", code.name)
         except Exception:
             printErrorAndExit(f"No such opcode {self.__registers.IR()}.")
 
@@ -212,7 +214,7 @@ class Processor:
 
         return code
 
-    def __execute(self, code:str):
+    def __execute(self, code:Opcode):
         """
         Starts the execute cycle.
         The execute cycle is characterized by executing the instruction given.
@@ -220,9 +222,11 @@ class Processor:
         @return status : returns the status specified by Enum Status.
         """
 
+        checkType([(code, Opcode)])
+
         print("\nStart of Execute Cycle : ")
 
-        status = self.__control.execute(Status, "left", code, self.__registers, self.__memory)
+        status = self.__control.execute("left", code, self.__registers, self.__memory)
         
         print("Values of all registers after Execute Cycle")
         self.__printAll()
@@ -232,8 +236,8 @@ class Processor:
             self.__registers.IBR().write(0)
         elif(status == Status.CONTINUE):
             self.__fetchRightIBR()
-            self.__decodeRightIBR()
-            status = self.__executeRightIBR()
+            ccode = self.__decodeRightIBR()
+            status = self.__executeRightIBR(code)
         
         print("End of Execute Cycle")
 
@@ -250,12 +254,12 @@ class Processor:
 
         #Going from IBR to IR
         print("Control signal generated : Right Opcode goes to IR : IR <-- IBR[0:7]")
-        self.__registers.IR().write(self.__registers.IBR().read(Positions.IBR_RIGHT_OPCODE_START, Positions.IBR_RIGHT_OPCODE_END))
+        self.__registers.IR().write(self.__registers.IBR().read(Positions.IBR_RIGHT_OPCODE_START.value, Positions.IBR_RIGHT_OPCODE_END.value))
         print("IR :", self.__registers.IR())
 
         #Going from IBR to MAR
         print("Control signal generated : Right Address goes to MAR : MAR <-- IBR[8:19]")
-        self.__registers.MAR().write(self.__registers.IBR().read(Positions.IBR_RIGHT_ADDRESS_START, Positions.IBR_RIGHT_ADDRESS_END))
+        self.__registers.MAR().write(self.__registers.IBR().read(Positions.IBR_RIGHT_ADDRESS_START.value, Positions.IBR_RIGHT_ADDRESS_END.value))
         print("MAR :", self.__registers.MAR())
 
         print("Values of all registers after  Partial Fetch Cycle")
@@ -272,8 +276,8 @@ class Processor:
         print("\nStart of Partial Decode Cycle : ")
         try:
             print(f"Control signal generated : Decoding {self.__registers.IR()}.")
-            code = Opcode(self.__registers.IR()).name
-            print("Decoded Opcode :", code)
+            code = Opcode(str(self.__registers.IR()))
+            print("Decoded Opcode :", code.name)
         except Exception:
             printErrorAndExit(f"No such opcode {self.__registers.IR()}.")
 
@@ -284,15 +288,18 @@ class Processor:
 
         return code
 
-    def __executeRightIBR(self, code:str):
+    def __executeRightIBR(self, code:Opcode):
         """
         Starts the execution cycle for the right instruction.
         @param code : the decoded right code
         @return status : returns the status specified by Enum Status.
         """
+
+        checkType([(code, Opcode)])
+
         print("\nStart of Partial Execute Cycle : ")
 
-        status = self.__control.execute(Status, "right", code, self.__registers, self.__memory)
+        status = self.__control.execute("right", code, self.__registers, self.__memory)
         
         print("Values of all registers after Partial Execute Cycle")
         self.__printAll()
@@ -307,6 +314,8 @@ class Processor:
         @param PCStartValue : the starting value of the PC
         """
 
+        checkType([(PCStartValue, int)])
+        
         status = Status.CONTINUE
         self.__registers.PC().write(PCStartValue)
 
@@ -314,3 +323,8 @@ class Processor:
             self.__fetch()
             code = self.__decode()
             status = self.__execute(code)
+
+
+            input()
+
+Processor("Assembly.obj").run(1)
