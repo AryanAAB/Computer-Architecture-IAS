@@ -60,7 +60,7 @@ class Memory:
 
         return self.__memory[lineNumber - 1]
 
-    def dump(self, lineNumber: int,  memory : str):
+    def dump(self, lineNumber: int,  memory : str, start = 0, finish = 40):
         """
         Writes memory into the line specified by lineNumber.
         @param lineNumber : The lineNumber to write to. LineNumber must be between 1 and 1000.
@@ -71,7 +71,7 @@ class Memory:
 
         if(lineNumber <= 0 or lineNumber > 1000):
             printErrorAndExit(f"Cannot access lineNumber {lineNumber}.")
-        elif(len(memory) != 40):
+        elif(len(memory) != finish - start):
             printErrorAndExit(f"{memory} is of insufficient length. Must be of length 40.")
         
-        self.__memory[lineNumber - 1] = memory
+        self.__memory[lineNumber - 1] = self.__memory[0:start] + memory + self.__memory[finish]

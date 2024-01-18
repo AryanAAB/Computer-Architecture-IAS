@@ -34,13 +34,15 @@ class Positions(Enum):
     IR_END                      =  8
     AC_END                      = 40
     MQ_END                      = 40
+    RIGHTMOST_BITS_END          = 12
 
 class Status(Enum):
     #Declaring constants that specify status after execution
     CONTINUE                    = 0 # Continue means to continue processing the input
     EXIT                        = 1 # Exit means that we have reached HALT or end of PC has been reached
-    CLEAR_IBR                   = 2 # Clear IBR means that we want to clear IBR because we don't want to execute the right statement
-
+    JUMP_LEFT                   = 2 # JUMP_LEFT means that we want to jump left
+    JUMP_RIGHT                  = 3 # JUMP_RIGHT means that we want to jump right
+    
 """
 Creates a PC, MAR, MBR, IBR, IR, AC, and MQ registers.
 """
@@ -138,20 +140,7 @@ class Processor:
         print("AC  :", self.__registers.AC())
         print("MQ  :", self.__registers.MQ())
 
-    def __fetch(self):
-        """
-        Starts the fetch cycle.
-        The fetch cycle is characterized by
-        MAR <-- PC
-        MBR <-- MAR
-        IBR <-- MBR[20:39]
-        IR  <-- MBR[0:7]
-        MAR <-- MBR[8:19]
-        PC  <-- PC + 1
-        """
-        
-        print("\nStart of Fetch Cycle : ")
-        
+    def __fetchFromMem(self):
         print("PC :", self.__registers.PC())
         
         #Going from PC to MAR
@@ -189,6 +178,22 @@ class Processor:
 
         print("Values of all registers after Fetch Cycle")
         self.__printAll()
+
+    def __fetch(self):
+        """
+        Starts the fetch cycle.
+        The fetch cycle is characterized by
+        MAR <-- PC
+        MBR <-- MAR
+        IBR <-- MBR[20:39]
+        IR  <-- MBR[0:7]
+        MAR <-- MBR[8:19]
+        PC  <-- PC + 1
+        """
+        
+        print("\nStart of Fetch Cycle : ")
+        
+        self.__fetchFromMem()
 
         print("End of Fetch Cycle")
     
@@ -231,13 +236,12 @@ class Processor:
         print("Values of all registers after Execute Cycle")
         self.__printAll()
 
-        if(status == Status.CLEAR_IBR):
-            print("Clearing IBR")
-            self.__registers.IBR().write(0)
+        if(status == Status.JUMP_LEFT or status == Status.JUMP_RIGHT):
+            self.__clearIBR()
         elif(status == Status.CONTINUE):
             self.__fetchRightIBR()
-            ccode = self.__decodeRightIBR()
-            status = self.__executeRightIBR(code)
+            code = self.__decodeRight()
+            status = self.__executeRight(code)
         
         print("End of Execute Cycle")
 
@@ -265,9 +269,23 @@ class Processor:
         print("Values of all registers after  Partial Fetch Cycle")
         self.__printAll()
 
+        self.__clearIBR()
+        
         print("End of Partial Fetch Cycle")
 
-    def __decodeRightIBR(self):
+    def __fetchRightMem(self):
+        print("\nStart of partial fetch cycle")
+
+        self.__fetchFromMem()
+
+    def __clearIBR(self):
+        print("Clearing IBR")
+
+        self.__registers.IBR().write(0)
+
+        print("End of Partial Fetch Cycle")
+
+    def __decodeRight(self):
         """
         Starts the decode cycle for the right instruction.
         @return code : string representation of the decoded opcode.
@@ -288,7 +306,7 @@ class Processor:
 
         return code
 
-    def __executeRightIBR(self, code:Opcode):
+    def __executeRight(self, code:Opcode):
         """
         Starts the execution cycle for the right instruction.
         @param code : the decoded right code
@@ -319,11 +337,16 @@ class Processor:
         status = Status.CONTINUE
         self.__registers.PC().write(PCStartValue)
 
-        while(status == Status.CONTINUE):
-            self.__fetch()
-            code = self.__decode()
-            status = self.__execute(code)
+        while(status != Status.EXIT):
+            if(status == Status.JUMP_RIGHT):
+                self.__fetchRightMem()
+                code = self.__decodeRight()
+                status = self.__executeRight()
 
+            else:
+                self.__fetch()
+                code = self.__decode()
+                status = self.__execute(code)
 
             input()
 
