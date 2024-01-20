@@ -31,7 +31,7 @@ import javax.swing.SwingConstants;
 
 public class GUI extends JFrame
 {
-    public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 16); //Default font for all the texts in the GUI
+    public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 16);  //Default font for all the texts in the GUI
 
     private static final Manager manager = new Manager();                               //Stores the JPanel object added to this frame. 
 
