@@ -350,4 +350,4 @@ class Processor:
 
             input()
 
-Processor("Assembly.obj").run(1)
+Processor("Assembly.exe").run(1)
