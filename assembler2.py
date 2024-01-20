@@ -45,11 +45,32 @@ class Assembler():
     def __firstParse(self, lines):
         """
         This method readies the assembly code to be converted into machine code.
-        It performs _define, _include, _var, _start.
+        It performs |_define|, |_include|, _var, _start.
         It also ensures the code has no syntactical errors to an extent.
         """
-        return lines
+        
+        def start(lines):
+            k=len(lines)
+            i=0
+            while(i<k):
+                s=lines[i]
+                s=s.strip()
+                s=s.split("//")[0]         
+                if s=='':
+                    k=k-1
+                    lines.pop(i)
+                    continue
+                if s=='_end':
+                    return lines[:i]
+                lines[i]=s
+                i+=1
+            return lines
 
+        for j in range(len(lines)):
+            i=lines[j].strip().split("//")[0]
+            if i=="_start":
+                return start(lines[j+1:])
+        return lines
 
 
     def __secondParse(self, lines):
@@ -79,11 +100,13 @@ class Assembler():
                     if (ls[0]==i[0]):
                         for j in i[1].items():
                             if ls[1].startswith(j[0][0]) and ls[1].endswith(j[0][1]):
-                                ls[1]=ls[1].strip(j[0][0])
-                                ls[1]=ls[1].strip(j[0][1])
-                                if ls[1].isdigit():
-                                    return(j[1]+addZeros(bin(int(ls[1]))[2:],12))   
+                                num=ls[1][len(j[0][0]):(-len(j[0][1]))]
+                                if num.isdigit():
+                                    return(j[1]+addZeros(bin(int(num))[2:],12))
+                                else:
+                                    return(j[1]+"0"*12)
                 else:
+                    print(s)
                     printErrorAndExit("Invalid Statements")
 
         def checkInstruct(lst):
