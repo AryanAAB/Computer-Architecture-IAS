@@ -1,7 +1,7 @@
 """
 This class is used for simulating the processor.
 
-@author Aryan and Abhirath
+@author Aryan Bansal and Abhirath Adamane
 @version 1.0
 @data 13/01/24
 """
