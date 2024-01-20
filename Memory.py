@@ -3,7 +3,7 @@ This class is used for reading the memory stored in a text file.
 The text file must contain 1000 lines that are each of length 40.
 The file must contain binary 1's and 0's.
 
-@author Aryan and Abhirath
+@author Aryan Bansal and Abhirath Adamane
 @version 1.0
 @data 13/01/24
 """
