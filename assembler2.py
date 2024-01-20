@@ -111,8 +111,7 @@ class Assembler():
                 memory[pos]=checkInstruct(temp)
                 
         return memory
-
-
+        
 
     def run(self):
 
