@@ -16,17 +16,21 @@ class Processor:
     Defines the processor and runs the program.
     """
 
-    def __init__(self, fileName:str, fh):
+    def __init__(self, fileName:str, fh:str):
         """
         @param fileName : a string representing the file path consisting of the binary code.
         """
 
-        checkType([(fileName, str)])
+        checkType([(fileName, str), (fh, str)])
 
         self.__memory = Memory(fileName=fileName)
         self.__registers = HoldRegisters()
         self.__control = Control(self.__registers, self.__memory, self.__writeStage, self.__writeRegisters, self.__writeMemory)
-        self.__fh = fh
+        
+        try:
+            self.__fh = open(fh, "w")
+        except IOError:
+            printErrorAndExit("No such file", fh)
 
 
     
@@ -44,6 +48,10 @@ class Processor:
         print("MQ  :", self.__registers.MQ())
         
     def __fetchFromMem(self):
+        """
+        Fetches data from memory. That is, it performs the operation MBR <-- MAR <-- PC.
+        """
+        
         print("PC :", self.__registers.PC())
         self.__writeRegisters("Printing Registers")
 
@@ -200,6 +208,11 @@ class Processor:
         self.__writeRegisters("End of Partial Fetch Cycle")
 
     def __fetchRightMem(self):
+        """
+        Starts the fetch cycle but only for fetching the right memory.
+        There is no IBR that is fetched.
+        """
+
         print("\nStart of partial fetch cycle")
         self.__writeStage("Partial Fetch Cycle")
 
@@ -234,6 +247,10 @@ class Processor:
         self.__writeRegisters("End of partial fetch cycle")
 
     def __clearIBR(self):
+        """
+        Clears the IBR and sets it to 0.
+        """
+
         print("Clearing IBR")
 
         self.__registers.IBR().write(0)
@@ -287,13 +304,13 @@ class Processor:
 
         return status
 
-    def run(self, PCStartValue:int):
+    def run(self, PCStartValue:int, MemoryFinalValue:int):
         """
         Runs the processor.
         @param PCStartValue : the starting value of the PC
         """
 
-        checkType([(PCStartValue, int)])
+        checkType([(PCStartValue, int), (MemoryFinalValue, int)])
         
         status = Status.CONTINUE
         self.__registers.PC().write(PCStartValue)
@@ -315,15 +332,23 @@ class Processor:
             input()
         
         self.__fh.write("END" + "\n")
-        self.__fh.write("5")
+        self.__fh.write(self.__memory.load(MemoryFinalValue))
 
         self.__fh.close()
         
     def __writeStage(self, value:str):
+        """
+        Writes the current stage in the output file.
+        @param value : the new stage.
+        """
         
         self.__fh.write("STAGE: " + value + "\n")
     
     def __writeRegisters(self, value:str):
+        """
+        Writes the values of the registers to the output file.
+        @param value : the operation performed if any.
+        """
         if(value != None):
             self.__fh.write(value + "\n")
 
@@ -336,19 +361,15 @@ class Processor:
         self.__fh.write(str(self.__registers.MQ().read()) + "\n")
 
     def __writeMemory(self, operation:str, rw:str, position:int, value:str):
-
+        """
+        Writes the memory values into the outputfile.
+        @param operation : the operation performed
+        @param rw : read or write
+        @param position : the line number that was changed
+        @param value : the read/written value of the memory.
+        """
+        
         self.__fh.write(operation + "\n")
         self.__fh.write(rw + "\n")
         self.__fh.write(str(position) + " ")
         self.__fh.write(str(int("0b" + value, 2)) + "\n")
-
-inputFileName = "Assembly.exe"
-outputFileName = "Output.txt"
-
-try:
-    fh = open(outputFileName, 'w')
-except IOError:
-    printErrorAndExit(f"The file path {outputFileName} does not exist.")
-
-processor = Processor(inputFileName, fh)
-processor.run(1)
