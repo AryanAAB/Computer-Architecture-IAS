@@ -1,3 +1,7 @@
+# To edit the IAS commands
+
+Edit the Assembly.asm file as needed
+
 # To run the program on Linux
 ```
 chmod +x ExecuteLinux.sh
