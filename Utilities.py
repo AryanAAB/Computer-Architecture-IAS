@@ -8,24 +8,24 @@ class InstructionSet():
         This is the valid instruction set
         """
 
-        self.lst1={"LSH;":"00010100", "RHS;":"00010101", "NOP;":"00000000", "HALT;":"11111111"}
+        self.lst1={"LSH;":Opcode.LSH.value, "RHS;":Opcode.RSH.value, "NOP;":Opcode.NOP.value, "HALT;":Opcode.HALT.value}
 
         self.lst2=[('LOAD',
-       {('MQ', ';'): "00001010", ('MQ,M(', ');'): "00001001", ('M(', ');'): "00000001", ('-M(', ');'): "00000010", ('|M(', ')|;'): "00000011", ('-|M(', ')|;'): "00000100"}),
+       {('MQ', ';'): Opcode.LOAD_MQ.value, ('MQ,M(', ');'): Opcode.LOAD_MQ_MX.value, ('M(', ');'): Opcode.LOAD_MX.value, ('-M(', ');'): Opcode.LOAD_NEG_MX.value, ('|M(', ')|;'): Opcode.LOAD_ABS_MX.value, ('-|M(', ')|;'): Opcode.LOAD_NEG_ABS_MX.value}),
       ('JUMP',
-       {('M(', ',0:19);'): "00001101", ('M(', ',20:39);'): "00001110"}),
+       {('M(', ',0:19);'): Opcode.JUMP_MX_0_19.value, ('M(', ',20:39);'): Opcode.JUMP_MX_20_39.value}),
       ('JUMP+',
-       {('M(', ',0:19);'): "00001111", ('M(', ',20:39);'): "00010000"}),
+       {('M(', ',0:19);'): Opcode.JUMP_PLUS_MX_0_19.value, ('M(', ',20:39);'): Opcode.JUMP_PLUS_MX_20_39.value}),
       ('ADD',
-       {('M(', ');'): "00000101", ('|M(', ')|;'): "00000111"}),
+       {('M(', ');'): Opcode.ADD_MX.value, ('|M(', ')|;'): Opcode.ADD_ABS_MX.value}),
       ('SUB',
-       {('M(', ');'): "00000110", ('|M(', ')|;'): "00001000"}),
+       {('M(', ');'): Opcode.SUB_MX.value, ('|M(', ')|;'): Opcode.SUB_ABS_MX.value}),
       ('MUL',
-       {('M(', ');'): "00001011"}),
+       {('M(', ');'): Opcode.MUL_MX.value}),
       ('DIV',
-       {('M(', ');'): "00001100"}),
+       {('M(', ');'): Opcode.DIV_MX.value}),
       ('STOR',
-       {('M(', ',8:19);'): "00010010", ('M(', ',28:39);'): "00010011", ('M(', ');'): "00100001"})]
+       {('M(', ',8:19);'): Opcode.STOR_MX_8_19.value, ('M(', ',28:39);'): Opcode.STOR_MX_28_39.value, ('M(', ');'): Opcode.STOR_MX.value})]
 
 
 class Opcode(Enum):
@@ -50,6 +50,8 @@ class Opcode(Enum):
     RSH                = "00010101"
     STOR_MX_8_19       = "00010010"
     STOR_MX_28_39      = "00010011" 
+    HALT               = "11111111"
+    NOP                = "00000000"
 
 def checkType(checkList:list):
     """

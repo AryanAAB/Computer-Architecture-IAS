@@ -1,6 +1,6 @@
-from Processor import Status, HoldRegisters, Positions
 from Memory import Memory
 from Utilities import *
+from ProcessorSupport import *
 
 class Control:
     def __init__(self, registers:HoldRegisters, memory:Memory, writeStage, writeRegisters, writeMemory):
@@ -14,35 +14,35 @@ class Control:
 
         self.__functions = {
             Opcode.LOAD_MQ            : self.__LOAD_MQ,
-            Opcode.LOAD_MQ_MX         : self.__LOAD_MQ_MX,
+            #Opcode.LOAD_MQ_MX         : self.__LOAD_MQ_MX,
             Opcode.STOR_MX            : self.__STOR_MX,
-            Opcode.LOAD_MX            : self.__LOAD_MX,
+            #Opcode.LOAD_MX            : self.__LOAD_MX,
             Opcode.LOAD_NEG_MX        : self.__LOAD_NEG_MX,
-            Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
+            #Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
             Opcode.LOAD_NEG_ABS_MX    : self.__LOAD_NEG_ABS_MX,
-            Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
+            #Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
             Opcode.JUMP_MX_20_39      : self.__JUMP_MX_20_39,
             Opcode.JUMP_PLUS_MX_0_19  : self.__JUMP_PLUS_MX_0_19,
-            Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
+            #Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
             Opcode.ADD_MX             : self.__ADD_MX,
-            Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
-            Opcode.SUB_MX             : self.__SUB_MX,
+            #Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
+            #Opcode.SUB_MX             : self.__SUB_MX,
             Opcode.SUB_ABS_MX         : self.__SUB_ABS_MX,
-            Opcode.MUL_MX             : self.__MUL_MX,
+            #Opcode.MUL_MX             : self.__MUL_MX,
             Opcode.DIV_MX             : self.__DIV_MX,
-            Opcode.LSH                : self.__LSH,
+            #Opcode.LSH                : self.__LSH,
             Opcode.RSH                : self.__RSH,
             Opcode.STOR_MX_8_19       : self.__STOR_MX_8_19,
-            Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
+            #Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
             Opcode.HALT               : self.__HALT,
-            Opcode.NOP                : self.__NOP
+            #Opcode.NOP                : self.__NOP
             }
 
     def execute(self, instruction:str, code:Opcode):
         checkType([(instruction, str), (code, Opcode)])
         
         if(self.__functions.get(code) != None):
-            return self.__functions.get(code)(instruction)
+            return self.__functions.get(code)()
 
         printErrorAndExit("No such opcode : ", code.name)
     
@@ -87,7 +87,7 @@ class Control:
         position = self.__registers.MAR().read()
 
         print(f"Control signal generated : Transferring contents of Memory to MBR : MBR <-- M[{position}]")
-        self.__registers.MBR().write(self.__memory.load(position))
+        self.__registers.MBR().write(int("0b" + self.__memory.load(position), 2))
         self.__writeMemory("Reading", "R", position, self.__memory.load(position))
         self.__writeRegisters("Printing")
 
@@ -185,3 +185,6 @@ class Control:
         self.__writeMemory("MEM[8:19]", "W", position, self.__memory.load(position))
         
         return self.__check(Status.CONTINUE)
+    
+    def __HALT(self):
+        return Status.EXIT
