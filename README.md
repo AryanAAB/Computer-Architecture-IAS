@@ -1,16 +1,16 @@
-#To run the program on Linux
+# To run the program on Linux
 ```
 chmod +x ExecuteLinux.sh
 
 ./ExecuteLinux.sh
 ```
 
-#To run the program on Windows
+# To run the program on Windows
 ```
 ExecuteWindows.bat
 ```
 
-#To run the program on Mac
+# To run the program on Mac
 
 ```
 chmod +x ExecuteMac.sh
