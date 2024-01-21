@@ -1,3 +1,5 @@
+from Utilities import printErrorAndExit
+
 class Register:
     def __init__(self, size:int, startVal=0):
         self.__size=size
@@ -21,8 +23,8 @@ class Register:
         self.__val+=1
         ans=bin(self.__val)[2:]
         while (len(ans)>self.__size):
-            self.__val-=2**self__size
-        print("overflow happend")
+            self.__val-=2**self.__size
+            print("overflow happend")
 
     def read(self, start=0, end=None):
         if end==None:

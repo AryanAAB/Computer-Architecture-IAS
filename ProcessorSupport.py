@@ -6,15 +6,19 @@ class Positions(Enum):
     START                       =  0
     MBR_LEFT_OPCODE_START       =  0
     MBR_LEFT_ADDRESS_START      =  8
+    MBR_RIGHT_OPCODE_START      = 20
+    MBR_RIGHT_ADDRESS_START     = 28
     MBR_RIGHT_INSTRUCTION_START = 20
     IBR_RIGHT_OPCODE_START      =  0
     IBR_RIGHT_ADDRESS_START     =  8
-
+    RIGHTMOST_BITS_START        = 28
     #Declaring constants that specify the last bit(exclusive)
     PC_END                      = 12
     MAR_END                     = 12
     MBR_LEFT_OPCODE_END         =  8
     MBR_LEFT_ADDRESS_END        = 20
+    MBR_RIGHT_OPCODE_END        = 28
+    MBR_RIGHT_ADDRESS_END       = 40
     MBR_RIGHT_INSTRUCTION_END   = 40
     IBR_RIGHT_OPCODE_END        =  8
     IBR_RIGHT_ADDRESS_END       = 20
@@ -23,7 +27,7 @@ class Positions(Enum):
     IR_END                      =  8
     AC_END                      = 40
     MQ_END                      = 40
-    RIGHTMOST_BITS_END          = 12
+    RIGHTMOST_BITS_END          = 40
 
 class Status(Enum):
     #Declaring constants that specify status after execution

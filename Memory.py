@@ -72,6 +72,6 @@ class Memory:
         if(lineNumber <= 0 or lineNumber > 1000):
             printErrorAndExit(f"Cannot access lineNumber {lineNumber}.")
         elif(len(memory) != finish - start):
-            printErrorAndExit(f"{memory} is of insufficient length. Must be of length 40.")
+            printErrorAndExit(f"{memory} is of insufficient length. Must be of length {finish - start}.")
         
         self.__memory[lineNumber - 1] = self.__memory[lineNumber - 1][0:start] + memory + self.__memory[lineNumber - 1][finish:]

@@ -64,6 +64,23 @@ class Processor:
         print("MBR :", self.__registers.MBR())
         self.__writeRegisters(f"MBR <-- M[{self.__registers.MAR().read()}]")
 
+    def __fetch(self):
+        """
+        Starts the fetch cycle.
+        The fetch cycle is characterized by
+        MAR <-- PC
+        MBR <-- MAR
+        IBR <-- MBR[20:39]
+        IR  <-- MBR[0:7]
+        MAR <-- MBR[8:19]
+        PC  <-- PC + 1
+        """
+        
+        print("\nStart of Fetch Cycle : ")
+        self.__writeStage("FETCH")
+
+        self.__fetchFromMem()
+
         #Going from MBR to IBR
         print("Control signal generated : Right Instruction goes to IBR : IBR <-- MBR[20:39]")
         self.__registers.IBR().write(self.__registers.MBR().read(Positions.MBR_RIGHT_INSTRUCTION_START.value, Positions.MBR_RIGHT_INSTRUCTION_END.value))
@@ -90,23 +107,6 @@ class Processor:
 
         print("Values of all registers after Fetch Cycle")
         self.__printAll()
-
-    def __fetch(self):
-        """
-        Starts the fetch cycle.
-        The fetch cycle is characterized by
-        MAR <-- PC
-        MBR <-- MAR
-        IBR <-- MBR[20:39]
-        IR  <-- MBR[0:7]
-        MAR <-- MBR[8:19]
-        PC  <-- PC + 1
-        """
-        
-        print("\nStart of Fetch Cycle : ")
-        self.__writeStage("FETCH")
-
-        self.__fetchFromMem()
 
         print("End of Fetch Cycle")
         self.__writeRegisters("End of Fetch Cycle")
@@ -204,6 +204,31 @@ class Processor:
         self.__writeStage("Partial Fetch Cycle")
 
         self.__fetchFromMem()
+        self.__clearIBR()
+
+        #Going from MBR to IR
+        print("Control signal generated : Right Opcode goes to IR : IR <-- MBR[20:27]")
+        self.__registers.IR().write(self.__registers.MBR().read(Positions.MBR_RIGHT_OPCODE_START.value, Positions.MBR_RIGHT_OPCODE_END.value))
+        print("IR :", self.__registers.IR())
+        self.__writeRegisters("IR <-- MBR[20:27]")
+
+        #Going from MBR to MAR
+        print("Control signal generated : Right Address goes to MAR : MAR <-- MBR[28:39]")
+        self.__registers.MAR().write(self.__registers.MBR().read(Positions.MBR_RIGHT_ADDRESS_START.value, Positions.MBR_RIGHT_ADDRESS_END.value))
+        print("MAR :", self.__registers.MAR())
+        self.__writeRegisters("MAR <-- MBR[28:39]")
+
+        #PC = PC + 1
+        print("Control signal generated : PC <-- PC + 1")
+        self.__registers.PC().inc()
+        print("PC :", self.__registers.PC())
+        self.__writeRegisters("PC <-- PC + 1")
+
+        print("Values of all registers after Fetch Cycle")
+        self.__printAll()
+
+        print("End of Fetch Cycle")
+        self.__writeRegisters("End of Fetch Cycle")
 
         print("\nEnd of partial fetch cycle")
         self.__writeRegisters("End of partial fetch cycle")
@@ -280,7 +305,7 @@ class Processor:
             if(status == Status.JUMP_RIGHT):
                 self.__fetchRightMem()
                 code = self.__decodeRight()
-                status = self.__executeRight()
+                status = self.__executeRight(code)
 
             else:
                 self.__fetch()
@@ -310,7 +335,7 @@ class Processor:
         self.__fh.write(str(self.__registers.AC().read()) + "\n")
         self.__fh.write(str(self.__registers.MQ().read()) + "\n")
 
-    def __writeMemory(self, operation:str, rw:str, position:int, value:int):
+    def __writeMemory(self, operation:str, rw:str, position:int, value:str):
 
         self.__fh.write(operation + "\n")
         self.__fh.write(rw + "\n")

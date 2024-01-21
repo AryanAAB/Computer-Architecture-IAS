@@ -74,7 +74,7 @@ class Control:
         print(f"Control signal generated : Transferring contents of MBR to Memory : M[{position}] <-- MBR")
         self.__memory.dump(position, str(self.__registers.MBR()))
         print(f"M[{position}] :", self.__memory.load(position))
-        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, self.__registers.MBR())
+        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, str(self.__registers.MBR()))
         return self.__check(Status.CONTINUE)
 
     def __MBR_TO_AC(self):
@@ -87,6 +87,7 @@ class Control:
         print(f"Control signal generated : Transferring contents of MAR to PC : PC <-- MAR")
         self.__registers.PC().write(self.__registers.MAR().read())
         self.__writeRegisters("PC <-- MAR")
+        print("PC :", self.__registers.PC())
 
     def __MEM_TO_MBR(self):
         position = self.__registers.MAR().read()
@@ -102,6 +103,7 @@ class Control:
 
         print(f"Control signal generated : Negating MBR : MBR <-- -MBR")
         self.__registers.MBR().write(self.__registers.MBR().negate())
+        print("MBR :", self.__registers.MBR())
         self.__writeRegisters("MBR <-- -MBR")
 
         self.__MBR_TO_AC()
@@ -112,12 +114,12 @@ class Control:
         self.__MEM_TO_MBR()
 
         print(f"Control signal generated : Absolute Value of MBR : MBR <-- |MBR|")
-        self.__registers.MBR().write(self.__registers.MBR().read())#.abs())
+        self.__registers.MBR().write(self.__registers.MBR().abs())
         print("MBR : ", self.__registers.MBR())
         self.__writeRegisters("MBR <-- |MBR|")
 
         print(f"Control signal generated : Negating MBR : MBR <-- -MBR")
-        self.__registers.MBR().write(self.__registers.MBR().read())#.negate())
+        self.__registers.MBR().write(self.__registers.MBR().negate())
         print("MBR : ", self.__registers.MBR())
         self.__writeRegisters("MBR <-- -MBR")
         
@@ -126,7 +128,7 @@ class Control:
         return self.__check(Status.CONTINUE)
 
     def __JUMP_MX_20_39(self):
-        print(f"Control signal generated : Jumping to right Instruction : PC <-- MAR")
+        print(f"Control signal generated : Jumping to right Instruction")
         self.__MAR_TO_PC()
         return self.__check(Status.JUMP_RIGHT)
 
@@ -134,7 +136,7 @@ class Control:
         print(f"Control signal generated: Checking if AC >= 0")
 
         if(self.__registers.AC().read() >= 0):
-            print(f"Control signal generated : Jumping to left instruction : PC <-- MAR")
+            print(f"Control signal generated : Jumping to left instruction")
             self.__MAR_TO_PC()
             return self.__check(Status.JUMP_LEFT)
 
@@ -156,7 +158,8 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC - |MBR|")
 
-        self.__registers.AC().write(self.__registers.AC().read() + self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().read() - self.__registers.MBR().abs())
+        print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC - |MBR|")
 
         return self.__check(Status.CONTINUE)
@@ -165,18 +168,21 @@ class Control:
         self.__MEM_TO_MBR()
 
         print(f"Control signal generated : MQ <-- AC / MBR")
-        self.__registers.MQ().write(self.__registers.AC().read() // self.__registers.MBR().abs())
+        self.__registers.MQ().write(self.__registers.AC().read() // self.__registers.MBR().read())
+        print("MQ :", self.__registers.MQ())
         self.__writeRegisters("MQ <-- AC / MBR")
 
         print(f"Control signal generated : AC <-- AC % MBR")
-        self.__registers.AC().write(self.__registers.AC().read() % self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().read() % self.__registers.MBR().read())
+        print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC % MBR")
 
         return self.__check(Status.CONTINUE)
     
     def __RSH(self):
-        print(f"Control signal generated : AC / 2")
-        self.__registers.AC().write(self.__registers.AC().read() / 2)
+        print(f"Control signal generated : AC >> 1")
+        self.__registers.AC().write(self.__registers.AC().read() // 2)
+        print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC / 2")
 
         return self.__check(Status.CONTINUE)
@@ -184,12 +190,14 @@ class Control:
     def __STOR_MX_8_19(self):
         position = self.__registers.MAR().read()
 
-        print(f"Control signal generated : MBR <-- AC[0:11]")
-        self.__registers.MBR().write(self.__registers.AC().read(Positions.START, Positions.RIGHTMOST_BITS_END))
-        self.__writeRegisters("MBR <-- AC[0:11]")
+        print(f"Control signal generated : MBR <-- AC[28:39]")
+        self.__registers.MBR().write(self.__registers.AC().read(Positions.RIGHTMOST_BITS_START.value, Positions.RIGHTMOST_BITS_END.value))
+        print("MBR :", self.__registers.MBR())
+        self.__writeRegisters("MBR <-- AC[28:39]")
 
         print(f"Control signal generated : MEM[8:19] <-- MBR[0:11]")
-        self.__memory.dump(position, str(self.__registers.MBR().read(Positions.START, Positions.RIGHTMOST_BITS_END)), 8, 19)
+        self.__memory.dump(position, str(Register(12, self.__registers.MBR().read(Positions.RIGHTMOST_BITS_START.value, Positions.RIGHTMOST_BITS_END.value))), 8, 20)
+        print(f"M[{position}] :", self.__memory.load(position))
         self.__writeMemory("MEM[8:19]", "W", position, self.__memory.load(position))
         
         return self.__check(Status.CONTINUE)
