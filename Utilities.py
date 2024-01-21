@@ -8,7 +8,7 @@ class InstructionSet():
         This is the valid instruction set
         """
 
-        self.lst1={"LSH;":Opcode.LSH.value, "RHS;":Opcode.RSH.value, "NOP;":Opcode.NOP.value, "HALT;":Opcode.HALT.value}
+        self.lst1={"LSH;":Opcode.LSH.value, "RSH;":Opcode.RSH.value, "NOP;":Opcode.NOP.value, "HALT;":Opcode.HALT.value}
 
         self.lst2=[('LOAD',
        {('MQ', ';'): Opcode.LOAD_MQ.value, ('MQ,M(', ');'): Opcode.LOAD_MQ_MX.value, ('M(', ');'): Opcode.LOAD_MX.value, ('-M(', ');'): Opcode.LOAD_NEG_MX.value, ('|M(', ')|;'): Opcode.LOAD_ABS_MX.value, ('-|M(', ')|;'): Opcode.LOAD_NEG_ABS_MX.value}),

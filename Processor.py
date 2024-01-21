@@ -314,8 +314,8 @@ class Processor:
 
         self.__fh.write(operation + "\n")
         self.__fh.write(rw + "\n")
-        self.__fh.write(str(position) + "\n")
-        self.__fh.write(str(value) + "\n")
+        self.__fh.write(str(position) + " ")
+        self.__fh.write(str(int("0b" + value, 2)) + "\n")
 
 inputFileName = "Assembly.exe"
 outputFileName = "Output.txt"

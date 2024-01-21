@@ -74,4 +74,4 @@ class Memory:
         elif(len(memory) != finish - start):
             printErrorAndExit(f"{memory} is of insufficient length. Must be of length 40.")
         
-        self.__memory[lineNumber - 1] = self.__memory[0:start] + memory + self.__memory[finish]
+        self.__memory[lineNumber - 1] = self.__memory[lineNumber - 1][0:start] + memory + self.__memory[lineNumber - 1][finish:]

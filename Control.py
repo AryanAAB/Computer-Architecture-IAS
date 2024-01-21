@@ -68,11 +68,13 @@ class Control:
 
         print(f"Control signal generated : Transferring contents of AC to MBR: MBR <-- AC")
         self.__registers.MBR().write(self.__registers.AC().read())
+        print("MBR :", self.__registers.MBR())
         self.__writeRegisters("MBR <-- AC")
 
         print(f"Control signal generated : Transferring contents of MBR to Memory : M[{position}] <-- MBR")
-        self.__memory.dump(position, self.__registers.MBR().read())
-        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, self.__registers.MBR().read())
+        self.__memory.dump(position, str(self.__registers.MBR()))
+        print(f"M[{position}] :", self.__memory.load(position))
+        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, self.__registers.MBR())
         return self.__check(Status.CONTINUE)
 
     def __MBR_TO_AC(self):
