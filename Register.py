@@ -42,7 +42,7 @@ class Register:
         
         self.__val=int((curr[:start]+req+curr[end:]),2)
 
-if __name__ == __main__:
+if __name__ == "__main__":
     IR=Register(8,3)
     IBR=Register(20,837762)
     MAR=Register(12)

@@ -191,11 +191,10 @@ class Processor:
         print("MAR :", self.__registers.MAR())
         self.__writeRegisters("MAR <-- IBR[8:19]")
 
+        self.__clearIBR()
         print("Values of all registers after  Partial Fetch Cycle")
         self.__printAll()
         self.__writeRegisters("Printing")
-
-        self.__clearIBR()
         
         print("End of Partial Fetch Cycle")
         self.__writeRegisters("End of Partial Fetch Cycle")
@@ -214,10 +213,8 @@ class Processor:
 
         self.__registers.IBR().write(0)
         self.__writeRegisters("Clearing IBR")
-
-        print("End of Partial Fetch Cycle")
-        self.__writeRegisters("End of Partial Fetch Cycle")
-
+        print("IBR : ", self.__registers.IBR())
+        
     def __decodeRight(self):
         """
         Starts the decode cycle for the right instruction.
@@ -277,7 +274,7 @@ class Processor:
         self.__registers.PC().write(PCStartValue)
 
         self.__writeStage("NONE")
-        self.__writeRegisters("Printing")
+        self.__writeRegisters(None)
 
         while(status != Status.EXIT):
             if(status == Status.JUMP_RIGHT):
@@ -292,30 +289,33 @@ class Processor:
 
             input()
         
+        self.__fh.write("END" + "\n")
+        self.__fh.write("5")
+
         self.__fh.close()
         
     def __writeStage(self, value:str):
         
-        self.__fh.write(value)
+        self.__fh.write("STAGE: " + value + "\n")
     
     def __writeRegisters(self, value:str):
         if(value != None):
-            self.__fh.write(value)
+            self.__fh.write(value + "\n")
 
-        self.__fh.write(str(self.__registers.PC().read()))
-        self.__fh.write(str(self.__registers.MAR().read()))
-        self.__fh.write(str(self.__registers.MBR().read()))
-        self.__fh.write(str(self.__registers.IBR().read()))
-        self.__fh.write(str(self.__registers.IR().read()))
-        self.__fh.write(str(self.__registers.AC().read()))
-        self.__fh.write(str(self.__registers.MQ().read()))
+        self.__fh.write(str(self.__registers.PC().read()) + "\n")
+        self.__fh.write(str(self.__registers.MAR().read()) + "\n")
+        self.__fh.write(str(self.__registers.MBR().read()) + "\n")
+        self.__fh.write(str(self.__registers.IBR().read()) + "\n")
+        self.__fh.write(str(self.__registers.IR().read()) + "\n")
+        self.__fh.write(str(self.__registers.AC().read()) + "\n")
+        self.__fh.write(str(self.__registers.MQ().read()) + "\n")
 
     def __writeMemory(self, operation:str, rw:str, position:int, value:int):
 
-        self.__fh.write(operation)
-        self.__fh.write(rw)
-        self.__fh.write(str(position))
-        self.__fh.write(str(value))
+        self.__fh.write(operation + "\n")
+        self.__fh.write(rw + "\n")
+        self.__fh.write(str(position) + "\n")
+        self.__fh.write(str(value) + "\n")
 
 inputFileName = "Assembly.exe"
 outputFileName = "Output.txt"

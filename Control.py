@@ -56,8 +56,10 @@ class Control:
         print("Control signal generated : Transferring contents of MQ to AC : AC <-- MQ")
 
         self.__registers.AC().write(self.__registers.MQ().read())
+        
         self.__writeRegisters("AC <-- MQ")
-
+        print("AC : ", self.__registers.AC())
+        
         return self.__check(Status.CONTINUE)
     
     def __STOR_MX(self):
@@ -77,6 +79,7 @@ class Control:
         print(f"Control signal generated : Transferring contents of MBR to AC : AC <-- MBR")
         self.__registers.AC().write(self.__registers.MBR().read())
         self.__writeRegisters("AC <-- MBR")
+        print("AC : ", self.__registers.AC())
     
     def __MAR_TO_PC(self):
         print(f"Control signal generated : Transferring contents of MAR to PC : PC <-- MAR")
@@ -88,6 +91,7 @@ class Control:
 
         print(f"Control signal generated : Transferring contents of Memory to MBR : MBR <-- M[{position}]")
         self.__registers.MBR().write(int("0b" + self.__memory.load(position), 2))
+        print("MBR : ", self.__registers.MBR())
         self.__writeMemory("Reading", "R", position, self.__memory.load(position))
         self.__writeRegisters("Printing")
 
@@ -105,14 +109,16 @@ class Control:
     def __LOAD_NEG_ABS_MX(self):
         self.__MEM_TO_MBR()
 
-        print(f"Control signal generated : Negating MBR : MBR <-- |MBR|")
-        self.__registers.MBR().write(self.__registers.MBR().abs())
+        print(f"Control signal generated : Absolute Value of MBR : MBR <-- |MBR|")
+        self.__registers.MBR().write(self.__registers.MBR().read())#.abs())
+        print("MBR : ", self.__registers.MBR())
         self.__writeRegisters("MBR <-- |MBR|")
 
         print(f"Control signal generated : Negating MBR : MBR <-- -MBR")
-        self.__registers.MBR().write(self.__registers.MBR().negate())
+        self.__registers.MBR().write(self.__registers.MBR().read())#.negate())
+        print("MBR : ", self.__registers.MBR())
         self.__writeRegisters("MBR <-- -MBR")
-
+        
         self.__MBR_TO_AC()
 
         return self.__check(Status.CONTINUE)
