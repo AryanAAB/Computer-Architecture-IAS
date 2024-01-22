@@ -63,19 +63,15 @@ class Control:
         return self.__check(Status.CONTINUE)
 
     def __LOAD_MQ_MX(self):
-        print("Control signal generated : Transferring contents of MQ to MBR : MBR <-- MQ")
-
-        self.__registers.MBR().write(self.__registers.MQ().read())
-        
-        self.__writeRegisters("MBR <-- MQ")
-        print("MBR : ", self.__registers.MBR())
-
-        print(f"Control signal generated : Transferring contents of MBR to Memory : M[{position}] <-- MBR")
-        self.__memory.dump(position, str(self.__registers.MBR()))
-        print(f"M[{position}] :", self.__memory.load(position))
-        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, str(self.__registers.MBR()))
-        
+        self.__MEM_TO_MBR()
+        self.__MBR_TO_MQ()
         return self.__check(Status.CONTINUE)
+
+    def __MBR_TO_MQ(self):
+        print(f"Control signal generated : Transferring contents of MBR to MQ : MQ <-- MBR")
+        self.__registers.MQ().write(self.__registers.MBR().read())
+        self.__writeRegisters("MQ <-- MBR")
+        print("MQ : ", self.__registers.MQ())
     
     def __STOR_MX(self):
         
