@@ -16,7 +16,7 @@ class Control:
             Opcode.LOAD_MQ            : self.__LOAD_MQ,
             Opcode.LOAD_MQ_MX         : self.__LOAD_MQ_MX,
             Opcode.STOR_MX            : self.__STOR_MX,
-            #Opcode.LOAD_MX            : self.__LOAD_MX,
+            Opcode.LOAD_MX            : self.__LOAD_MX,
             Opcode.LOAD_NEG_MX        : self.__LOAD_NEG_MX,
             #Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
             Opcode.LOAD_NEG_ABS_MX    : self.__LOAD_NEG_ABS_MX,
@@ -65,6 +65,11 @@ class Control:
     def __LOAD_MQ_MX(self):
         self.__MEM_TO_MBR()
         self.__MBR_TO_MQ()
+        return self.__check(Status.CONTINUE)
+
+    def __LOAD_MX(self):
+        self.__MEM_TO_MBR()
+        self.__MBR_TO_AC()
         return self.__check(Status.CONTINUE)
 
     def __MBR_TO_MQ(self):
