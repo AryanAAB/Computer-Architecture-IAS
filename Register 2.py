@@ -1,3 +1,5 @@
+from Utilities import printErrorAndExit
+
 class Register:
     """
         This class simulates a register holding integers in sign-magnitude form
