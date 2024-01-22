@@ -23,7 +23,7 @@ class Control:
             Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
             Opcode.JUMP_MX_20_39      : self.__JUMP_MX_20_39,
             Opcode.JUMP_PLUS_MX_0_19  : self.__JUMP_PLUS_MX_0_19,
-            #Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
+            Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
             Opcode.ADD_MX             : self.__ADD_MX,
             #Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
             #Opcode.SUB_MX             : self.__SUB_MX,
@@ -176,6 +176,17 @@ class Control:
             print(f"Control signal generated : Jumping to left instruction")
             self.__MAR_TO_PC()
             return self.__check(Status.JUMP_LEFT)
+
+        print(f"Continuing with normal execution")
+        return self.__check(Status.CONTINUE)
+
+    def __JUMP_PLUS_MX_20_39(self):
+        print(f"Control signal generated: Checking if AC >= 0")
+
+        if(self.__registers.AC().read() >= 0):
+            print(f"Control signal generated : Jumping to right instruction")
+            self.__MAR_TO_PC()
+            return self.__check(Status.JUMP_RIGHT)
 
         print(f"Continuing with normal execution")
         return self.__check(Status.CONTINUE)
