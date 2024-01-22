@@ -63,7 +63,7 @@ class Control:
         return self.__check(Status.CONTINUE)
 
     def __LOAD_MQ_MX(self):
-        print("Control signal generated : Transferring contents of MQ to AC : MBR <-- MQ")
+        print("Control signal generated : Transferring contents of MQ to MBR : MBR <-- MQ")
 
         self.__registers.MBR().write(self.__registers.MQ().read())
         
