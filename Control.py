@@ -300,6 +300,21 @@ class Control:
         
         return self.__check(Status.CONTINUE)
 
+    def __STOR_MX_28_39(self):
+        position = self.__registers.MAR().read()
+
+        print(f"Control signal generated : MBR <-- AC[28:39]")
+        self.__registers.MBR().write(self.__registers.AC().read(Positions.RIGHTMOST_BITS_START.value, Positions.RIGHTMOST_BITS_END.value))
+        print("MBR :", self.__registers.MBR())
+        self.__writeRegisters("MBR <-- AC[28:39]")
+
+        print(f"Control signal generated : MEM2[28:39] <-- MBR[0:11]")
+        self.__memory.dump(position, str(Register(12, self.__registers.MBR().read(Positions.RIGHTMOST_BITS_START.value, Positions.RIGHTMOST_BITS_END.value))), 28, 40)
+        print(f"M[{position}] :", self.__memory.load(position))
+        self.__writeMemory("MEM[28:39]", "W", position, self.__memory.load(position))
+        
+        return self.__check(Status.CONTINUE)
+
     def __NOP(self):
         return self.__check(Status.CONTINUE)
         
