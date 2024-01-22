@@ -28,14 +28,14 @@ class Control:
             Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
             Opcode.SUB_MX             : self.__SUB_MX,
             Opcode.SUB_ABS_MX         : self.__SUB_ABS_MX,
-            #Opcode.MUL_MX             : self.__MUL_MX,
+            Opcode.MUL_MX             : self.__MUL_MX,
             Opcode.DIV_MX             : self.__DIV_MX,
             #Opcode.LSH                : self.__LSH,
             Opcode.RSH                : self.__RSH,
             Opcode.STOR_MX_8_19       : self.__STOR_MX_8_19,
             #Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
             Opcode.HALT               : self.__HALT,
-            #Opcode.NOP                : self.__NOP
+            Opcode.NOP                : self.__NOP
             }
 
     def execute(self, instruction:str, code:Opcode):
@@ -247,6 +247,27 @@ class Control:
         self.__writeRegisters("AC <-- AC % MBR")
 
         return self.__check(Status.CONTINUE)
+
+    def __MUL_MX(self):
+        self.__MEM_TO_MBR()
+
+        prod = bin(self.__registers.MQ().read() * self.__registers.MBR().read())[2::]
+        while len(prod)<40:
+            prod='0' + prod
+        
+        print(f"Control signal generated : MQ <-- LSBs(MQ * MBR)")
+        self.__registers.MQ().write(int(prod[-40::],2))
+        print("MQ :", self.__registers.MQ())
+        self.__writeRegisters("MQ <-- LSBs(MQ * MBR)")
+
+        del prod[-40::]
+        
+        print(f"Control signal generated : AC <-- USBs(MQ * MBR)")
+        self.__registers.AC().write(int(prod,2))
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- USBs(MQ * MBR)")
+
+        return self.__check(Status.CONTINUE)
     
     def __RSH(self):
         print(f"Control signal generated : AC >> 1")
@@ -270,6 +291,9 @@ class Control:
         self.__writeMemory("MEM[8:19]", "W", position, self.__memory.load(position))
         
         return self.__check(Status.CONTINUE)
-    
+
+    def __NOP(self):
+        return self.__check(Status.CONTINUE)
+        
     def __HALT(self):
         return Status.EXIT
