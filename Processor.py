@@ -217,7 +217,7 @@ class Processor:
         self.__writeStage("Partial Fetch Cycle")
 
         self.__fetchFromMem()
-        self.__clearIBR()
+        self.__clearIBR() #maybe a relic check and delete
 
         #Going from MBR to IR
         print("Control signal generated : Right Opcode goes to IR : IR <-- MBR[20:27]")
