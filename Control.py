@@ -25,8 +25,8 @@ class Control:
             Opcode.JUMP_PLUS_MX_0_19  : self.__JUMP_PLUS_MX_0_19,
             Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
             Opcode.ADD_MX             : self.__ADD_MX,
-            #Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
-            #Opcode.SUB_MX             : self.__SUB_MX,
+            Opcode.ADD_ABS_MX         : self.__ADD_ABS_MX,
+            Opcode.SUB_MX             : self.__SUB_MX,
             Opcode.SUB_ABS_MX         : self.__SUB_ABS_MX,
             #Opcode.MUL_MX             : self.__MUL_MX,
             Opcode.DIV_MX             : self.__DIV_MX,
@@ -198,6 +198,17 @@ class Control:
 
         self.__registers.AC().write(self.__registers.AC().read() + self.__registers.MBR().read())
         self.__writeRegisters("AC <-- AC + MBR")
+
+        return self.__check(Status.CONTINUE)
+    
+    def __ADD_ABS_MX(self):
+        self.__MEM_TO_MBR()
+
+        print(f"Control signal generated : AC <-- AC + |MBR|")
+
+        self.__registers.AC().write(self.__registers.AC().read() + self.__registers.MBR().abs())
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- AC + |MBR|")
 
         return self.__check(Status.CONTINUE)
     
