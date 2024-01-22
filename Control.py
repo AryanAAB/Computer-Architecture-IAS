@@ -30,10 +30,10 @@ class Control:
             Opcode.SUB_ABS_MX         : self.__SUB_ABS_MX,
             Opcode.MUL_MX             : self.__MUL_MX,
             Opcode.DIV_MX             : self.__DIV_MX,
-            #Opcode.LSH                : self.__LSH,
+            Opcode.LSH                : self.__LSH,
             Opcode.RSH                : self.__RSH,
             Opcode.STOR_MX_8_19       : self.__STOR_MX_8_19,
-            #Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
+            Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
             Opcode.HALT               : self.__HALT,
             Opcode.NOP                : self.__NOP
             }
@@ -273,7 +273,15 @@ class Control:
         print(f"Control signal generated : AC >> 1")
         self.__registers.AC().write(self.__registers.AC().read() // 2)
         print("AC :", self.__registers.AC())
-        self.__writeRegisters("AC <-- AC / 2")
+        self.__writeRegisters("AC <-- AC >> 1")
+
+        return self.__check(Status.CONTINUE)
+
+    def __LSH(self):
+        print(f"Control signal generated : AC << 1")
+        self.__registers.AC().write(self.__registers.AC().read() * 2)
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- AC << 1")
 
         return self.__check(Status.CONTINUE)
     
