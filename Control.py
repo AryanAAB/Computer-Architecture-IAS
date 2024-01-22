@@ -20,7 +20,7 @@ class Control:
             Opcode.LOAD_NEG_MX        : self.__LOAD_NEG_MX,
             Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
             Opcode.LOAD_NEG_ABS_MX    : self.__LOAD_NEG_ABS_MX,
-            #Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
+            Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
             Opcode.JUMP_MX_20_39      : self.__JUMP_MX_20_39,
             Opcode.JUMP_PLUS_MX_0_19  : self.__JUMP_PLUS_MX_0_19,
             #Opcode.JUMP_PLUS_MX_20_39 : self.__JUMP_PLUS_MX_20_39,
@@ -159,6 +159,11 @@ class Control:
 
         return self.__check(Status.CONTINUE)
 
+    def __JUMP_MX_0_19(self):
+        print(f"Control signal generated : Jumping to left Instruction")
+        self.__MAR_TO_PC()
+        return self.__check(Status.JUMP_LEFT)
+    
     def __JUMP_MX_20_39(self):
         print(f"Control signal generated : Jumping to right Instruction")
         self.__MAR_TO_PC()
