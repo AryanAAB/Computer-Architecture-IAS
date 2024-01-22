@@ -18,7 +18,7 @@ class Control:
             Opcode.STOR_MX            : self.__STOR_MX,
             Opcode.LOAD_MX            : self.__LOAD_MX,
             Opcode.LOAD_NEG_MX        : self.__LOAD_NEG_MX,
-            #Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
+            Opcode.LOAD_ABS_MX        : self.__LOAD_ABS_MX,
             Opcode.LOAD_NEG_ABS_MX    : self.__LOAD_NEG_ABS_MX,
             #Opcode.JUMP_MX_0_19       : self.__JUMP_MX_0_19,
             Opcode.JUMP_MX_20_39      : self.__JUMP_MX_20_39,
@@ -64,12 +64,28 @@ class Control:
 
     def __LOAD_MQ_MX(self):
         self.__MEM_TO_MBR()
+        
         self.__MBR_TO_MQ()
+        
         return self.__check(Status.CONTINUE)
 
     def __LOAD_MX(self):
         self.__MEM_TO_MBR()
+        
         self.__MBR_TO_AC()
+        
+        return self.__check(Status.CONTINUE)
+
+    def __LOAD_ABS_MX(self):
+        self.__MEM_TO_MBR()
+
+        print(f"Control signal generated : Absolute Value of MBR : MBR <-- |MBR|")
+        self.__registers.MBR().write(self.__registers.MBR().abs())
+        print("MBR : ", self.__registers.MBR())
+        self.__writeRegisters("MBR <-- |MBR|")
+        
+        self.__MBR_TO_AC()
+
         return self.__check(Status.CONTINUE)
 
     def __MBR_TO_MQ(self):
