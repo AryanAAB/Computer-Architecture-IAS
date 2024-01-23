@@ -135,8 +135,9 @@ class Assembler():
         with open(f"{self.__fileName}exe", "w") as fileObject:
             fileObject.writelines(toDump)       
 
-assembler=Assembler(input("Enter the file to be assembled:\n"))
-assembler.run()
+if __name__ == "__main__":
+    assembler=Assembler(input("Enter the file to be assembled:\n"))
+    assembler.run()
 
 
 

@@ -352,13 +352,13 @@ class Processor:
         if(value != None):
             self.__fh.write(value + "\n")
 
-        self.__fh.write(str(self.__registers.PC().read()) + "\n")
-        self.__fh.write(str(self.__registers.MAR().read()) + "\n")
-        self.__fh.write(str(self.__registers.MBR().read()) + "\n")
-        self.__fh.write(str(self.__registers.IBR().read()) + "\n")
-        self.__fh.write(str(self.__registers.IR().read()) + "\n")
-        self.__fh.write(str(self.__registers.AC().read()) + "\n")
-        self.__fh.write(str(self.__registers.MQ().read()) + "\n")
+        self.__fh.write(str(self.__registers.PC().getVal()) + "\n")
+        self.__fh.write(str(self.__registers.MAR().getVal()) + "\n")
+        self.__fh.write(str(self.__registers.MBR().get()) + "\n")
+        self.__fh.write(str(self.__registers.IBR().getVal()) + "\n")
+        self.__fh.write(str(self.__registers.IR().getVal()) + "\n")
+        self.__fh.write(str(self.__registers.AC().getVal()) + "\n")
+        self.__fh.write(str(self.__registers.MQ().getVal()) + "\n")
 
     def __writeMemory(self, operation:str, rw:str, position:int, value:str):
         """

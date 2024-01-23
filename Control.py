@@ -172,7 +172,7 @@ class Control:
     def __JUMP_PLUS_MX_0_19(self):
         print(f"Control signal generated: Checking if AC >= 0")
 
-        if(self.__registers.AC().read() >= 0):
+        if(self.__registers.AC().getSign() == 0):
             print(f"Control signal generated : Jumping to left instruction")
             self.__MAR_TO_PC()
             return self.__check(Status.JUMP_LEFT)
@@ -183,7 +183,7 @@ class Control:
     def __JUMP_PLUS_MX_20_39(self):
         print(f"Control signal generated: Checking if AC >= 0")
 
-        if(self.__registers.AC().read() >= 0):
+        if(self.__registers.AC().getSign() == 0):
             print(f"Control signal generated : Jumping to right instruction")
             self.__MAR_TO_PC()
             return self.__check(Status.JUMP_RIGHT)
@@ -196,7 +196,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC + MBR")
 
-        self.__registers.AC().write(self.__registers.AC().read() + self.__registers.MBR().read())
+        self.__registers.AC().write(self.__registers.AC().getVal() + self.__registers.MBR().getVal())
         self.__writeRegisters("AC <-- AC + MBR")
 
         return self.__check(Status.CONTINUE)
@@ -206,7 +206,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC - MBR")
 
-        self.__registers.AC().write(self.__registers.AC().read() - self.__registers.MBR().read())
+        self.__registers.AC().write(self.__registers.AC().getVal() - self.__registers.MBR().getVal())
         self.__writeRegisters("AC <-- AC - MBR")
 
         return self.__check(Status.CONTINUE)
@@ -216,7 +216,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC + |MBR|")
 
-        self.__registers.AC().write(self.__registers.AC().read() + self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().getVal() + self.__registers.MBR().abs())
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC + |MBR|")
 
@@ -227,7 +227,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC - |MBR|")
 
-        self.__registers.AC().write(self.__registers.AC().read() - self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().getVal() - self.__registers.MBR().abs())
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC - |MBR|")
 
@@ -237,12 +237,12 @@ class Control:
         self.__MEM_TO_MBR()
 
         print(f"Control signal generated : MQ <-- AC / MBR")
-        self.__registers.MQ().write(self.__registers.AC().read() // self.__registers.MBR().read())
+        self.__registers.MQ().write(self.__registers.AC().getVal() // self.__registers.MBR().getVal())
         print("MQ :", self.__registers.MQ())
         self.__writeRegisters("MQ <-- AC / MBR")
 
         print(f"Control signal generated : AC <-- AC % MBR")
-        self.__registers.AC().write(self.__registers.AC().read() % self.__registers.MBR().read())
+        self.__registers.AC().write(self.__registers.AC().getVal() % self.__registers.MBR().getVal())
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC % MBR")
 
@@ -251,8 +251,8 @@ class Control:
     def __MUL_MX(self):
         self.__MEM_TO_MBR()
 
-        prod = bin(self.__registers.MQ().read() * self.__registers.MBR().read())[2::]
-        while len(prod)<40:
+        prod = bin(self.__registers.MQ().getVal() * self.__registers.MBR().getVal())[2::]
+        while len(prod)<=80:
             prod='0' + prod
         
         print(f"Control signal generated : MQ <-- LSBs(MQ * MBR)")
@@ -262,10 +262,10 @@ class Control:
 
         del prod[-40::]
         
-        print(f"Control signal generated : AC <-- USBs(MQ * MBR)")
+        print(f"Control signal generated : AC <-- MSBs(MQ * MBR)")
         self.__registers.AC().write(int(prod,2))
         print("AC :", self.__registers.AC())
-        self.__writeRegisters("AC <-- USBs(MQ * MBR)")
+        self.__writeRegisters("AC <-- MSBs(MQ * MBR)")
 
         return self.__check(Status.CONTINUE)
     
