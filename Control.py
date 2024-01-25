@@ -216,7 +216,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC + |MBR|")
 
-        self.__registers.AC().write(self.__registers.AC().getVal() + self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().getSV() + self.__registers.MBR().getVal())
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC + |MBR|")
 
@@ -227,7 +227,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC - |MBR|")
 
-        self.__registers.AC().write(self.__registers.AC().getVal() - self.__registers.MBR().abs())
+        self.__registers.AC().write(self.__registers.AC().getSV() - self.__registers.MBR().getVal())
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC - |MBR|")
 
@@ -237,8 +237,8 @@ class Control:
         self.__MEM_TO_MBR()
 
         print(f"Control signal generated : MQ <-- AC / MBR")
-        q=(((1 - 2 * self.__registers.AC().getSign())) * self.__registers.AC().getVal()) // ((1 - 2 * self.__registers.MBR().signVal()) * self.__registers.MBR().getVal())
-        r=(((1 - 2 * self.__registers.AC().getSign())) * self.__registers.AC().getVal()) % ((1 - 2 * self.__registers.MBR().signVal()) * self.__registers.MBR().getVal())
+        q=(self.__registers.AC().getSV()) // (self.__registers.MBR().SV())
+        r=((self.__registers.AC().getSV()) % (self.__registers.MBR().SV()))
         self.__registers.MQ().write(q)
         print("MQ :", self.__registers.MQ())
         self.__writeRegisters("MQ <-- AC / MBR")
