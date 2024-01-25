@@ -1,24 +1,43 @@
+"""
+This class performs all the operations that are required. 
+It has functions for all the 21 instructions present in the
+IAS and the instructions that we have made by ourselves,
+namely increment, decrement, input, and display.
+
+@author Aryan Bansal and Abhirath Adamane
+@version 1.0
+@data 13/01/24
+"""
+
 from Memory import Memory
 from Utilities import *
 from ProcessorSupport import *
 
 class Control:
-    def __init__(self, registers:HoldRegisters, memory:Memory, writeStage, writeRegisters, writeMemory):
+    """
+    Defines the controller class in order to decide what to do in execute phase.
+    """
+    
+    def __init__(self, registers:HoldRegisters, memory:Memory, writeRegisters, writeMemory):
+        """
+        @param registers : the register object
+        @param memory : the memory object
+        @param writeRegisters : write Registers method to print registers to output file.
+        @param writeMemory : write Memory method to print memory to output file. 
+        """
+        
         checkType([(registers, HoldRegisters), (memory, Memory)])
         
         self.__registers = registers
         self.__memory = memory
         self.__writeRegisters = writeRegisters
-        self.__writeStage = writeStage
         self.__writeMemory = writeMemory
 
         self.__functions = {
-            ###########
-            #Opcode.INC               : self.__INC,
-            #Opcode.DEC               : self.__DEC,
-            #Opcode.INP_MX            : self.__INP_MX,
-            #Opcode.DISP_MX           : self.__DISP_MX,
-            ###########
+            Opcode.INC               : self.__INC,
+            Opcode.DEC               : self.__DEC,
+            Opcode.INP_MX            : self.__INP_MX,
+            Opcode.DISP_MX           : self.__DISP_MX,
             Opcode.LOAD_MQ            : self.__LOAD_MQ,
             Opcode.LOAD_MQ_MX         : self.__LOAD_MQ_MX,
             Opcode.STOR_MX            : self.__STOR_MX,
@@ -45,6 +64,12 @@ class Control:
             }
 
     def execute(self, instruction:str, code:Opcode):
+        """
+        Excecutes the instruction based on the opcode given.
+        @param instruction : the instruction performed
+        @param code : the opcode
+        """
+        
         checkType([(instruction, str), (code, Opcode)])
         
         if(self.__functions.get(code) != None):
@@ -53,6 +78,11 @@ class Control:
         printErrorAndExit("No such opcode : ", code.name)
     
     def __check(self, status:Status):
+        """
+        Returns the status if the PC has not reached the end, i.e., line 1001.
+        Otherwise, it returns Status.Exit
+        """
+        
         if(self.__registers.PC().read() != 1001):
             return status
         
@@ -100,6 +130,13 @@ class Control:
         self.__writeRegisters("MQ <-- MBR")
         print("MQ : ", self.__registers.MQ())
     
+    def __MBR_TO_MEM(self, position: int):
+        print(f"Control signal generated : Transferring contents of MBR to Memory : M[{position}] <-- MBR")
+        self.__memory.dump(position, str(self.__registers.MBR()))
+        print(f"M[{position}] :", self.__memory.load(position))
+        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, str(self.__registers.MBR()))
+        return self.__check(Status.CONTINUE)
+    
     def __STOR_MX(self):
         
         position = self.__registers.MAR().read()
@@ -109,11 +146,7 @@ class Control:
         print("MBR :", self.__registers.MBR())
         self.__writeRegisters("MBR <-- AC")
 
-        print(f"Control signal generated : Transferring contents of MBR to Memory : M[{position}] <-- MBR")
-        self.__memory.dump(position, str(self.__registers.MBR()))
-        print(f"M[{position}] :", self.__memory.load(position))
-        self.__writeMemory(f"M[{position}] <-- MBR", 'W', position, str(self.__registers.MBR()))
-        return self.__check(Status.CONTINUE)
+        return self.__MBR_TO_MEM(position)
 
     def __MBR_TO_AC(self):
         print(f"Control signal generated : Transferring contents of MBR to AC : AC <-- MBR")
@@ -346,3 +379,25 @@ class Control:
         self.__writeRegisters("AC <-- AC - 1")
 
         return self.__check(Status.CONTINUE)  
+
+    def __INP_MX(self):
+        position = self.__registers.MAR().read()
+
+        print(f"Control signal generated: Getting user input")
+        val = int(input("Please enter a number : "))
+        print(f"Value entered is {val}")
+        print(f"MBR <-- {val}")
+        self.__registers.MBR().write(val)
+        self.__writeRegisters(f"MBR <-- {val}")
+
+        return self.__MBR_TO_MEM(position)
+    
+    def __DISP_MX(self):
+        position = self.__registers.MAR().read()
+
+        print(f"Control signal generated : MBR <-- M[{position}]")
+        self.__registers.MBR().write(self.__memory.load(position))
+        self.__writeRegisters(f"MBR <-- M[{position}]")
+
+        print(f"Value : {self.__registers.MBR().read()}")
+        self.__writeRegisters(f"Value : {self.__registers.MBR().read()}")

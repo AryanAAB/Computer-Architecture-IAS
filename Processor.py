@@ -19,6 +19,7 @@ class Processor:
     def __init__(self, fileName:str, fh:str):
         """
         @param fileName : a string representing the file path consisting of the binary code.
+        @param fh : a string representation of the file path consisting of the output file.
         """
 
         checkType([(fileName, str), (fh, str)])

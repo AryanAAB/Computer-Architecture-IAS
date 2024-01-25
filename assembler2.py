@@ -1,3 +1,12 @@
+"""
+This class is the Assembler which converts the text given by the user
+into binary instructions which the IAS machine can understand. 
+
+@author Abhirath Adamane and Aryan Bansal
+@version 1.0
+@date 13/01/24
+"""
+
 from Utilities import *
 
 class Assembler():
