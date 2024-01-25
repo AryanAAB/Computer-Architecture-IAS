@@ -94,12 +94,7 @@ class Register:
         """
             It returns the negative of the stored value in decimal form.
         """
-                
-        req=str(self)
-        if req[0]=='0':
-            return int('1'+req[1::],2)
-        else:
-            return int('0'+req[1::],2)
+        return (-1*self.getSV())
 
     def abs(self):
         
@@ -107,7 +102,7 @@ class Register:
             It returns the absolute value of the stored value in decimal form.
         """
                 
-        return int('0'+str(self)[1::],2)
+        return self.getVal()
 
     def write(self, val, start=0, end=None):
         
