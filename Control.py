@@ -252,8 +252,10 @@ class Control:
         self.__MEM_TO_MBR()
 
         prod = bin(self.__registers.MQ().getVal() * self.__registers.MBR().getVal())[2::]
-        while len(prod)<=80:
+        a = (self.__registers.MQ().getSign()) ^ (self.self.__registers.MBR().getSign())
+        while len(prod)<80:
             prod='0' + prod
+        prod=bin(a)[2::] + prod
         
         print(f"Control signal generated : MQ <-- LSBs(MQ * MBR)")
         self.__registers.MQ().write(int(prod[-40::],2))
