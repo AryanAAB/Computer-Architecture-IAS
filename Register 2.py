@@ -28,6 +28,21 @@ class Register:
                 self.__val= startVal
                 self.__sign = 0
 
+    
+    def getVal():
+        """
+            This gives the value required
+        """
+        return self.__val
+
+
+    def getSign():
+        """
+            This gives the sign required
+        """
+        return self.__sign
+
+    
     def __str__(self):
 
         """
