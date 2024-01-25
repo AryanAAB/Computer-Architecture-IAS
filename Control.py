@@ -13,6 +13,12 @@ class Control:
         self.__writeMemory = writeMemory
 
         self.__functions = {
+            ###########
+            #Opcode.INC               : self.__INC,
+            #Opcode.DEC               : self.__DEC,
+            #Opcode.INP_MX            : self.__INP_MX,
+            #Opcode.DISP_MX           : self.__DISP_MX,
+            ###########
             Opcode.LOAD_MQ            : self.__LOAD_MQ,
             Opcode.LOAD_MQ_MX         : self.__LOAD_MQ_MX,
             Opcode.STOR_MX            : self.__STOR_MX,
