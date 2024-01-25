@@ -330,3 +330,19 @@ class Control:
         
     def __HALT(self):
         return Status.EXIT
+
+    def __INC(self):
+        print(f"Control signal generated : AC++ ")
+        self.__registers.AC().write( self.__registers.AC().getSV() + 1 )
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- AC + 1")
+
+        return self.__check(Status.CONTINUE)       
+
+    def __DEC(self):
+        print(f"Control signal generated : AC-- ")
+        self.__registers.AC().write( self.__registers.AC().getSV() - 1 )
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- AC - 1")
+
+        return self.__check(Status.CONTINUE)  
