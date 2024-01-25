@@ -196,7 +196,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC + MBR")
 
-        self.__registers.AC().write(self.__registers.AC().getVal() + self.__registers.MBR().getVal())
+        self.__registers.AC().write((1-2*self.__registers.AC().getVal())*self.__registers.AC().getVal() + (1-2*self.__registers.MBR().getVal())*self.__registers.MBR().getVal())
         self.__writeRegisters("AC <-- AC + MBR")
 
         return self.__check(Status.CONTINUE)
@@ -206,7 +206,7 @@ class Control:
 
         print(f"Control signal generated : AC <-- AC - MBR")
 
-        self.__registers.AC().write(self.__registers.AC().getVal() - self.__registers.MBR().getVal())
+        self.__registers.AC().write((1-2*self.__registers.AC().getVal())*self.__registers.AC().getVal() - (1-2*self.__registers.MBR().getVal())*self.__registers.MBR().getVal())
         self.__writeRegisters("AC <-- AC - MBR")
 
         return self.__check(Status.CONTINUE)
