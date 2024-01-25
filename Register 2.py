@@ -42,6 +42,13 @@ class Register:
         """
         return self.__sign
 
+
+    def getSV():
+        """
+            This gives the signed-value required
+        """
+        return (1-2*self.__sign)*self__val        
+
     
     def __str__(self):
 
