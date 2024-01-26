@@ -7,7 +7,7 @@ into binary instructions which the IAS machine can understand.
 @date 13/01/24
 """
 
-from Utilities import *
+from IMT2023513_Utilities import *
 
 class Assembler():
 
