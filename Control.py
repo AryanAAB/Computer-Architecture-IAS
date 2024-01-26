@@ -393,7 +393,15 @@ class Control:
         position = self.__registers.MAR().read()
 
         print(f"Control signal generated: Getting user input")
-        val = int(input("Please enter a number : "))
+        
+        while(True):
+            try:
+                val = int(input("Please enter a number : "))
+            except ValueError:
+                continue
+            else:
+                break
+        
         print(f"Value entered is {val}")
         print(f"MBR <-- {val}")
         self.__registers.MBR().write(val)
@@ -405,8 +413,10 @@ class Control:
         position = self.__registers.MAR().read()
 
         print(f"Control signal generated : MBR <-- M[{position}]")
-        self.__registers.MBR().write(self.__memory.load(position))
+        self.__registers.MBR().write(int("0b" + self.__memory.load(position), 2))
         self.__writeRegisters(f"MBR <-- M[{position}]")
 
         print(f"Value : {self.__registers.MBR().read()}")
         self.__writeRegisters(f"Value : {self.__registers.MBR().read()}")
+
+        return self.__check(Status.CONTINUE)
