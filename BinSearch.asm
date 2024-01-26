@@ -30,7 +30,7 @@ _start
 	12 LOAD M(502); DEC;		// Lines 12 and 13 are for *high = *mid - 1
 	13 STOR M(501); JUMP M(1,0:19);
 	
-	14 LOAD M(16); STOR M(999);		// Here we store the answer into M(999) // here we could do LOAD M(502) but it is optional
+	14 LOAD M(16); STOR M(999);		// Here we store the answer into M(999)
 
 _end
 
