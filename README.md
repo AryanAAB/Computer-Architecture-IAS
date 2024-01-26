@@ -1,6 +1,6 @@
 # To edit the IAS commands
 
-Edit the Assembly.asm file as needed. Make sure that you store the final output at line 1000.
+Edit the Assembly.asm file as needed. Make sure that you store the final output at line 999.
 
 # To run the program on Linux
 ```
