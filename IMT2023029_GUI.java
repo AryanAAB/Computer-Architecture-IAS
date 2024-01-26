@@ -29,7 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class GUI extends JFrame
+public class IMT2023029_GUI extends JFrame
 {
     public static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 16);  //Default font for all the texts in the GUI
 
@@ -39,7 +39,7 @@ public class GUI extends JFrame
      * Creates a Frame with the tile IAS Machine. 
      * The size of the frame is 800 by 400 and is not resizable.
      */
-    public GUI()
+    public IMT2023029_GUI()
     {
         super("IAS Machine");
 
@@ -60,7 +60,7 @@ public class GUI extends JFrame
      */
     public static void main(String [] args)
     {
-        GUI gui = new GUI();
+        IMT2023029_GUI gui = new IMT2023029_GUI();
         manager.setStartingValues();
 
         gui.setVisible(true);
@@ -195,7 +195,7 @@ class Button extends JButton implements ActionListener
     public Button()
     {
         this.setBackground(BACKGROUND_COLOR);
-        this.setFont(GUI.DEFAULT_FONT);
+        this.setFont(IMT2023029_GUI.DEFAULT_FONT);
         this.setText("NEXT");
 
         read = new OutputReader("Output.txt");
@@ -209,8 +209,8 @@ class Button extends JButton implements ActionListener
     public void setStartingValues()
     {
         ArrayList<String> list = read.getStartingInput();
-        GUI.getManager().updateStage(list.remove(0));
-        GUI.getManager().updateRegisters(list);
+        IMT2023029_GUI.getManager().updateStage(list.remove(0));
+        IMT2023029_GUI.getManager().updateRegisters(list);
     }
 
     /*
@@ -222,37 +222,37 @@ class Button extends JButton implements ActionListener
     {
         ArrayList<String> list = read.getNextValues();
         
-        GUI.getManager().reset();
+        IMT2023029_GUI.getManager().reset();
 
         //List is null impliex exit.
         if(list == null)
         {
-            GUI.getManager().popUp(read.readEnding());
+            IMT2023029_GUI.getManager().popUp(read.readEnding());
         }
         //Size is one implies that there is a state change.
         else if(list.size() == 1)
         {
-            GUI.getManager().updateStage(list.remove(0));
-            GUI.getManager().updateOperation("Changing stage");
+            IMT2023029_GUI.getManager().updateStage(list.remove(0));
+            IMT2023029_GUI.getManager().updateOperation("Changing stage");
         }
         else
         {
-            GUI.getManager().updateOperation(list.remove(0));
+            IMT2023029_GUI.getManager().updateOperation(list.remove(0));
 
             //Size is 1 after removal implies that this is a read instruction.
             if(list.size() == 1)
             {
-                GUI.getManager().read(list.remove(0));
+                IMT2023029_GUI.getManager().read(list.remove(0));
             }
             //Size is 2 after removal implies that this is a write instruction. 
             else if(list.size() == 2)
             {
-                GUI.getManager().write(list.remove(0));
+                IMT2023029_GUI.getManager().write(list.remove(0));
             }
             //Size is greater than 2 (assumed to be 7) implies that this is a normal register updation instruction.
             else
             {
-                GUI.getManager().updateRegisters(list);
+                IMT2023029_GUI.getManager().updateRegisters(list);
             }
         }
     }
@@ -272,7 +272,7 @@ class Stage extends JPanel
     {
         this.setBackground(BACKGROUND_COLOR);
         this.label = new JLabel("Stage : ");
-        this.label.setFont(GUI.DEFAULT_FONT);
+        this.label.setFont(IMT2023029_GUI.DEFAULT_FONT);
         this.add(label);
     }
 
@@ -363,7 +363,7 @@ class Memory extends JPanel
         String str = MESSAGE1;
 
         this.label = new JLabel(str);
-        this.label.setFont(GUI.DEFAULT_FONT);
+        this.label.setFont(IMT2023029_GUI.DEFAULT_FONT);
         this.add(label);
     }
     
@@ -409,7 +409,7 @@ class Operation extends JPanel
         this.setBackground(BACKGROUND_COLOR);
 
         this.label = new JLabel("Operation : None");
-        this.label.setFont(GUI.DEFAULT_FONT);
+        this.label.setFont(IMT2023029_GUI.DEFAULT_FONT);
         this.add(label);
     }
 
@@ -439,7 +439,7 @@ class EAST extends JPanel
         this.setBackground(BACKGROUND_COLOR);
 
         JLabel label = new JLabel("REGISTERS", SwingConstants.CENTER);
-        label.setFont(GUI.DEFAULT_FONT);
+        label.setFont(IMT2023029_GUI.DEFAULT_FONT);
         
         this.setLayout(new BorderLayout());
         this.add(label, BorderLayout.NORTH);
@@ -496,7 +496,7 @@ class EASTCenter extends JPanel
     {
         super.paintComponent(g);
 
-        g.setFont(GUI.DEFAULT_FONT);
+        g.setFont(IMT2023029_GUI.DEFAULT_FONT);
         
         Graphics2D g2d = (Graphics2D) g; //Castes g to a 2DGraphics object and uses it to draw the registers perfectly.
         FontRenderContext frc = g2d.getFontRenderContext();
@@ -510,7 +510,7 @@ class EASTCenter extends JPanel
             else
                 g.setColor(CHANGED_COLOR);
 
-            TextLayout layout = new TextLayout(labels[i], GUI.DEFAULT_FONT, frc);   //used for drawing the object.
+            TextLayout layout = new TextLayout(labels[i], IMT2023029_GUI.DEFAULT_FONT, frc);   //used for drawing the object.
             layout.draw(g2d, x, y);
             y += 20;
         }
