@@ -57,6 +57,7 @@ class Control:
             Opcode.DIV_MX             : self.__DIV_MX,
             Opcode.LSH                : self.__LSH,
             Opcode.RSH                : self.__RSH,
+            Opcode.ARSH                : self.__ARSH,
             Opcode.STOR_MX_8_19       : self.__STOR_MX_8_19,
             Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
             Opcode.HALT               : self.__HALT,
@@ -325,6 +326,14 @@ class Control:
         self.__registers.AC().write(int((str(self.__registers.AC())[1::]+'0'), 2))
         print("AC :", self.__registers.AC())
         self.__writeRegisters("AC <-- AC << 1")
+
+        return self.__check(Status.CONTINUE)
+
+    def __ARSH(self):
+        print(f"Control signal generated : AC a>> 1")
+        self.__registers.AC().write(int((str(self.__registers.AC().getSign()) + '0' + str(self.__registers.AC())[1:-1:]), 2))
+        print("AC :", self.__registers.AC())
+        self.__writeRegisters("AC <-- AC a>> 1")
 
         return self.__check(Status.CONTINUE)
     
