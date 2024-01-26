@@ -14,7 +14,8 @@
 
 int main()
 {
-    const int ARR_LENGTH = 10; 
+    int ARR_LENGTH = 0; 
+    scanf("%d", &ARR_LENGTH);
 
     int * arr = malloc(ARR_LENGTH * sizeof(int));
     
@@ -27,19 +28,20 @@ int main()
     
     //Begin
     
-    for(int i = 1; i - ARR_LENGTH < 0; i++)
+    for(int i = 1; i - ARR_LENGTH < 0;)
     {
         int j = i;
 
         int currentValue = arr[i];
         
-        while(j > 0 && arr[j - 1] - currentValue > 0)
+        while(-j < 0 && -arr[j - 1] + currentValue < 0)
         {
             arr[j] = arr[j - 1];
             j--;
         }
 
         arr[j] = currentValue;
+        i++;
     }
     
     //End

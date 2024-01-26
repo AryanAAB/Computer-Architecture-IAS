@@ -109,6 +109,7 @@ class Register:
         """
             It takes in a decimal value and overwrites the given register from [start, end).
         """
+        val = int(val)
         
         if end==None:
             end=self.__size

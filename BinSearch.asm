@@ -33,11 +33,6 @@ _start
 	14 LOAD M(16); STOR M(999);		// Here we store the answer into M(999) // here we could do LOAD M(502) but it is optional
 	15 ;HALT;
 
-	// Pre-Loading memory
-	500 100;	// start address (low)					
-	501 120;	// end address (high)
-	1000 10;	// value to check
-
 _end
 
 !!! The End result is stored at location 999

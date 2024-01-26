@@ -6,4 +6,4 @@ executableFile = "Assembly.exe"
 outputFile = "Output.txt"
 
 Assembler(asmFile).run()
-Processor(executableFile, outputFile).run(1, 999)
+Processor(executableFile, outputFile).run(20, 999)
