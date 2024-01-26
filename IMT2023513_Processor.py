@@ -9,7 +9,7 @@ This class is used for simulating the processor.
 from IMT2023513_Control import Control
 from IMT2023513_Memory import Memory
 from IMT2023513_Utilities import *
-from IMt2023513_ProcessorSupport import *
+from IMT2023513_ProcessorSupport import *
 
 class Processor:
     """
