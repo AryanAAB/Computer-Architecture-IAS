@@ -1,4 +1,4 @@
-from assembler2 import Assembler
+from assembler import Assembler
 from Processor import Processor
 
 asmFile = "Assembly.asm"
