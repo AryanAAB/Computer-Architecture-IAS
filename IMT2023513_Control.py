@@ -9,9 +9,9 @@ namely increment, decrement, input, display, and arithmethic right shift.
 @data 13/01/24
 """
 
-from Memory import Memory
-from Utilities import *
-from ProcessorSupport import *
+from IMT2023513_Memory import Memory
+from IMT2023513_Utilities import *
+from IMT2023513_ProcessorSupport import *
 
 class Control:
     """
