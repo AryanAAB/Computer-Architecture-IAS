@@ -52,7 +52,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class OutputReader
+public class IMT2023513_OutputReader
 {
 	private BufferedReader in;	//BufferedReader object for reading from file
 
@@ -60,7 +60,7 @@ public class OutputReader
 	 * Creates a BufferedReader specified by the file path given in the file.
 	 * @param file : the file path.
 	 */
-	public OutputReader(String file)
+	public IMT2023513_OutputReader(String file)
 	{
 		try
 		{
