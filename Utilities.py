@@ -16,6 +16,8 @@ class InstructionSet():
        {('M(', ',0:19);'): Opcode.JUMP_MX_0_19.value, ('M(', ',20:39);'): Opcode.JUMP_MX_20_39.value}),
       ('JUMP+',
        {('M(', ',0:19);'): Opcode.JUMP_PLUS_MX_0_19.value, ('M(', ',20:39);'): Opcode.JUMP_PLUS_MX_20_39.value}),
+      ('JUMP++',
+       {('M(', ',0:19);'): Opcode.JUMP_PLUS_PLUS_MX_0_19.value, ('M(', ',20:39);'): Opcode.JUMP_PLUS_PLUS_MX_20_39.value}),
       ('ADD',
        {('M(', ');'): Opcode.ADD_MX.value, ('|M(', ')|;'): Opcode.ADD_ABS_MX.value}),
       ('SUB',
@@ -62,6 +64,8 @@ class Opcode(Enum):
     INP_MX             = "00011000"
     DISP_MX            = "00011001"
     ARSH               = "00010001"
+    JUMP_PLUS_PLUS_MX_0_19 = "10010000"
+    JUMP_PLUS_PLUS_MX_20_39 ="10010001"
 
 def checkType(checkList:list):
     """
