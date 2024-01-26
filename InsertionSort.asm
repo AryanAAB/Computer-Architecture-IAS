@@ -1,3 +1,10 @@
+PROGRAM FOR INSERTION SORT
+
+By Aryan Bansal and Abhirath Adamane
+
+********
+!!! This assumes that the values that the user inputs are valid.
+
 _start
     80 0;       //Array length to be filled by user
     81 0;       //Temporary memory location used by the program
