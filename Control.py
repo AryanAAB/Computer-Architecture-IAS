@@ -2,7 +2,7 @@
 This class performs all the operations that are required. 
 It has functions for all the 21 instructions present in the
 IAS and the instructions that we have made by ourselves,
-namely increment, decrement, input, and display.
+namely increment, decrement, input, display, and arithmethic right shift.
 
 @author Aryan Bansal and Abhirath Adamane
 @version 1.0
