@@ -1,5 +1,5 @@
-_include "InsertionSort.asm"
-_include "BinSearch.asm"
+_include "IMT2023513_InsertionSort.asm"
+_include "IMT2023513_BinSearch.asm"
 
 _start
 
