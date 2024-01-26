@@ -27,9 +27,9 @@ class InstructionSet():
       ('STOR',
        {('M(', ',8:19);'): Opcode.STOR_MX_8_19.value, ('M(', ',28:39);'): Opcode.STOR_MX_28_39.value, ('M(', ');'): Opcode.STOR_MX.value}),
       ('INP',
-       {('M(',');') : Opcode.INP_MX.value})
+       {('M(',');') : Opcode.INP_MX.value}),
       ('DISP',
-       {('M(',');') : Opcode.DISP_MX.value}]
+       {('M(',');') : Opcode.DISP_MX.value})]
 
 
 class Opcode(Enum):

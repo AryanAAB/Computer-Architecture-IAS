@@ -29,25 +29,25 @@ class Register:
                 self.__sign = 0
 
     
-    def getVal():
+    def getVal(self):
         """
             This gives the value required
         """
         return self.__val
 
 
-    def getSign():
+    def getSign(self):
         """
             This gives the sign required
         """
         return self.__sign
 
 
-    def getSV():
+    def getSV(self):
         """
             This gives the signed-value required
         """
-        return (1-2*self.__sign)*self__val        
+        return (1-2*self.__sign)*self.__val        
 
     
     def __str__(self):
@@ -156,7 +156,7 @@ class Register:
             while len(req)<(end-start):
                 req='0'+req
             curr=str(self)[1::]
-            self.__val=int((cur[:start-1:] + req + cur[start-1+len(req)::]),2)
+            self.__val=int((curr[:start-1:] + req + curr[start-1+len(req)::]),2)
                 
 
 if __name__ == "__main__":

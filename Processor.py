@@ -26,7 +26,7 @@ class Processor:
 
         self.__memory = Memory(fileName=fileName)
         self.__registers = HoldRegisters()
-        self.__control = Control(self.__registers, self.__memory, self.__writeStage, self.__writeRegisters, self.__writeMemory)
+        self.__control = Control(self.__registers, self.__memory, self.__writeRegisters, self.__writeMemory)
         
         try:
             self.__fh = open(fh, "w")
@@ -355,7 +355,7 @@ class Processor:
 
         self.__fh.write(str(self.__registers.PC().getVal()) + "\n")
         self.__fh.write(str(self.__registers.MAR().getVal()) + "\n")
-        self.__fh.write(str(self.__registers.MBR().get()) + "\n")
+        self.__fh.write(str(self.__registers.MBR().getVal()) + "\n")
         self.__fh.write(str(self.__registers.IBR().getVal()) + "\n")
         self.__fh.write(str(self.__registers.IR().getVal()) + "\n")
         self.__fh.write(str(self.__registers.AC().getVal()) + "\n")

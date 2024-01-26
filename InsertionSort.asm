@@ -1,27 +1,18 @@
-1 LOAD M(499); SUB M(497);
-2 SUB M(500); JUMP+ M(19,0:19); 
-3 LOAD M(499); ADD M(498); 
-4 STOR M(494); STOR M(5,8:19); 
-5 LOAD |M(0)|; STOR M(495); 
-6 LOAD M(496); SUB M(494); 
-7 JUMP+ M(15,0:19); LOAD M(494); 
-8 SUB M(497); STOR M(9,8:19); 
-9 LOAD -M(0); ADD M(495); 
-10 JUMP+ M(15,0:19); LOAD M(494); 
-11 STOR M(14,8:19); LOAD -|M(497)|; 
-12 ADD M(494); STOR M(494); 
-13 STOR M(13,28:39); LOAD M(0);
-14 STOR M(0); JUMP M(6,0:19);
-15 LOAD M(494); STOR M(16,28:39); 
-16 LOAD M(495); STOR M(0); 
-17 LOAD M(499); ADD M(497);
-18 STOR M(499); JUMP M(1,0:19);
-19 HALT;
-496 501;
-497 1;
-498 500;
-499 2;
-500 3;
-501 100;
-502 78;
-503 8;
+_start
+    80 0;       //Array length to be filled by user
+    81 0;       //Temporary memory location used by the program
+    499 100;    //Start address
+    500 101;    //Start address
+    502 0;      //End address to be filled by user
+    503 1;      //constant 1
+    1000 0;     //Stores the value to check (to be filled by user)
+
+    //Getting the input from the user
+    20 INP M(80); LOAD -M(80);                    //Gets user input for array length
+    21 STOR M(81); JUMP+ M(26,20:39);             //Stores the array length in temporary memory 81
+    22 LOAD -M(81); ADD M(499); 
+    23 STOR M(24,8:19); NOP;
+    24 INP M(0); LOAD M(81);                      //Gets the user value and puts into the memory
+    25 ADD M(503); STOR M(81);                    //Decreases temp memory by one and stores it there
+    26 JUMP M(21,20:39); HALT;                    //Goes back to first instruction
+_end
