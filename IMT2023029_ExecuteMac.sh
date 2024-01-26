@@ -5,4 +5,4 @@ python3 IMT2023029_main.py
 
 # Run Java program
 javac IMT2023029_GUI.java
-java GUI
+java IMT2023029_GUI
