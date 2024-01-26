@@ -134,6 +134,12 @@ class Assembler():
             
             if temp[0].isdigit():
                 memory[pos]=(addZeros(bin(int(temp[0]))[2:], 40)+"\n")
+            elif temp[0][1::].isdigit() and (temp[0][0]=="-" or temp[0][0]=="+"):
+                stringNum=(addZeros(bin(int(temp[0][1::]))[2:], 39)+"\n")
+                if temp[0][0]=="-":
+                    memory[pos] = "1" + stringNum
+                else:
+                    memory[pos] = "0" + stringNum
             else:
                 memory[pos]=checkInstruct(temp)
                 
