@@ -1,5 +1,5 @@
 from enum import Enum
-from Register import Register
+from IMT2023029_Register import Register
 
 class Positions(Enum):
     #Declaring constants that specify the first bit(inclusive)
