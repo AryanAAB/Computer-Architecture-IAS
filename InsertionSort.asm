@@ -6,17 +6,6 @@ By Aryan Bansal and Abhirath Adamane
 !!! This assumes that the values that the user inputs are valid.
 
 _start
-    80 0;       //Array length to be filled by user
-    81 0;       //Temporary memory location used by the program
-    82 1;       //Stores the value i
-    83 1;       //Stores the value j
-    84 0;       //Stores the value currentValue
-
-    499 100;    //Starting constant
-    500 101;    //Start address
-    501 0;      //End address to be filled by user
-    503 1;      //constant 1
-    1000 0;     //Stores the value to check (to be filled by user)
 
     //Getting the input from the user
     20 INP M(80); LOAD -M(80);                    //Gets user input for array length
