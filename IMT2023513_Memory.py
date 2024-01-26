@@ -8,7 +8,7 @@ The file must contain binary 1's and 0's.
 @data 13/01/24
 """
 
-from Utilities import *
+from IMT2023513_Utilities import *
 
 class Memory:
     def __init__(self, fileName:str):
