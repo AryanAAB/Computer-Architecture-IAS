@@ -61,12 +61,13 @@ class Assembler():
                 i=i.strip('"')
                 a1=Assembler(i)
                 included.append(a1.run(1))
-            
+
             if i=="_start":
                 included.append(start(lines[j+1:]))
+                
                 ans=[]
                 for k in included:
-                    ans=ans+i
+                    ans=ans+k
                 return ans
 
         return lines
@@ -139,7 +140,7 @@ class Assembler():
         return memory
         
 
-    def run(self):
+    def run(self, val=0 ):
 
         """
             This accesses the file and runs the assembler.
@@ -153,17 +154,26 @@ class Assembler():
 
             
         onlyMemory=self.__firstParse(self.__lines)
-        toDump=self.__secondParse(onlyMemory)
 
+        if val:
+            return onlyMemory
+        
+        toDump=self.__secondParse(onlyMemory)
         
         while self.__fileName[-1]!=".":
             self.__fileName=self.__fileName[:-1]
         with open(f"{self.__fileName}exe", "w") as fileObject:
-            fileObject.writelines(toDump)       
+            fileObject.writelines(toDump)
+        return toDump
 
 if __name__ == "__main__":
     assembler=Assembler(input("Enter the file to be assembled:\n"))
     assembler.run()
+
+
+
+
+
 
 
 
