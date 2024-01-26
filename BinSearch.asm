@@ -25,7 +25,7 @@ _start
 
 	9 DEC; JUMP+ M(12,0:19);		// !! **** maybe wrong JUMP+ M(11)
 	10 LOAD M(502); STOR M(999);		// Lines 10 and 11 are if *mid is the required number
-	11 JUMP M(15,20:39);
+	11 JUMP M(15,0:19);
 
 	12 LOAD M(502); DEC;		// Lines 12 and 13 are for *high = *mid - 1
 	13 STOR M(501); JUMP M(1,0:19);
