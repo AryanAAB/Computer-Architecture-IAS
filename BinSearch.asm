@@ -9,7 +9,7 @@ By Abhirath Adamane and Aryan V Bansal
 _start
 
 	1 LOAD M(500); SUB M(501);		// Lines 1 and 2 represents 						
-	2 JUMP+ M(14,0:19); ARSH; 		//while(*low <= *high){}
+	2 JUMP++ M(14,0:19); ARSH; 		//while(*low <= *high){}
 
 	3 ADD M(501); STOR M(502);		// Lines 2 and 3 represents
 						// *mid = *high + (*low - *high)//2
