@@ -8,7 +8,7 @@ class InstructionSet():
         This is the valid instruction set
         """
 
-        self.lst1={"INC;":Opcode.INC.value,"DEC;":Opcode.DEC.value,"LSH;":Opcode.LSH.value, "RSH;":Opcode.RSH.value, "NOP;":Opcode.NOP.value, "HALT;":Opcode.HALT.value}
+        self.lst1={"INC;":Opcode.INC.value, "DEC;":Opcode.DEC.value, "LSH;":Opcode.LSH.value, "RSH;":Opcode.RSH.value, "ARSH;":Opcode.ARSH.value, "NOP;":Opcode.NOP.value, "HALT;":Opcode.HALT.value}
 
         self.lst2=[('LOAD',
        {('MQ', ';'): Opcode.LOAD_MQ.value, ('MQ,M(', ');'): Opcode.LOAD_MQ_MX.value, ('M(', ');'): Opcode.LOAD_MX.value, ('-M(', ');'): Opcode.LOAD_NEG_MX.value, ('|M(', ')|;'): Opcode.LOAD_ABS_MX.value, ('-|M(', ')|;'): Opcode.LOAD_NEG_ABS_MX.value}),
@@ -61,6 +61,7 @@ class Opcode(Enum):
     DEC                = "00010111"
     INP_MX             = "00011000"
     DISP_MX            = "00011001"
+    ARSH               = "00010001"
 
 def checkType(checkList:list):
     """
