@@ -23,7 +23,7 @@ _start
 	7 LOAD M(502); INC;		// Lines 7 and 8 are for *low = *mid + 1 
 	8 STOR M(500); JUMP M(1,0:19);
 
-	9 SUB M(504); JUMP+ M(12,0:19);		// !! **** maybe wrong JUMP+ M(11)
+	9 DEC; JUMP+ M(12,0:19);		// !! **** maybe wrong JUMP+ M(11)
 	10 LOAD M(502); STOR M(999);		// Lines 10 and 11 are if *mid is the required number
 	11 JUMP M(15,20:39);
 
