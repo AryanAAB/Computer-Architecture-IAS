@@ -27,7 +27,7 @@ class Assembler():
     def __firstParse(self, lines):
         """
         This method readies the assembly code to be converted into machine code.
-        It performs |_define|, |_include|, _var, _start.
+        It performs |_define|, _include, |_var|, _start.
         It also ensures the code has no syntactical errors to an extent.
         """
         
