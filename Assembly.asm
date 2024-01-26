@@ -13,7 +13,7 @@ _start
     26 JUMP M(21,20:39); NOP;                     //Goes back to first instruction
 
     //Displaying output
-    17 DISP M(999); HALT;
+    15 DISP M(999); HALT;
 
     //Pre-Defined values and important locations
 
