@@ -1,4 +1,4 @@
-from Utilities import printErrorAndExit
+from IMT2023513_Utilities import printErrorAndExit
 
 class Register:
     """
