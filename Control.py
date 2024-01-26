@@ -61,7 +61,9 @@ class Control:
             Opcode.STOR_MX_8_19       : self.__STOR_MX_8_19,
             Opcode.STOR_MX_28_39      : self.__STOR_MX_28_39,
             Opcode.HALT               : self.__HALT,
-            Opcode.NOP                : self.__NOP
+            Opcode.NOP                : self.__NOP,
+            Opcode.JUMP_PLUS_PLUS_MX_0_19 : self.__JUMP_PLUS_PLUS_MX_0_19,
+            Opcode.JUMP_PLUS_PLUS_MX_20_39 : self.__JUMP_PLUS_PLUS_MX_0_19
             }
 
     def execute(self, instruction:str, code:Opcode):
@@ -224,6 +226,28 @@ class Control:
         print(f"Control signal generated: Checking if AC >= 0")
 
         if(self.__registers.AC().getSign() == 0):
+            print(f"Control signal generated : Jumping to right instruction")
+            self.__MAR_TO_PC()
+            return self.__check(Status.JUMP_RIGHT)
+
+        print(f"Continuing with normal execution")
+        return self.__check(Status.CONTINUE)
+
+    def __JUMP_PLUS_PLUS_MX_0_19(self):
+        print(f"Control signal generated: Checking if AC > 0")
+
+        if(self.__registers.AC().getSV() > 0):
+            print(f"Control signal generated : Jumping to left instruction")
+            self.__MAR_TO_PC()
+            return self.__check(Status.JUMP_LEFT)
+
+        print(f"Continuing with normal execution")
+        return self.__check(Status.CONTINUE)
+
+    def __JUMP_PLUS_PLUS_MX_20_39(self):
+        print(f"Control signal generated: Checking if AC > 0")
+
+        if(self.__registers.AC().getSV() > 0):
             print(f"Control signal generated : Jumping to right instruction")
             self.__MAR_TO_PC()
             return self.__check(Status.JUMP_RIGHT)
