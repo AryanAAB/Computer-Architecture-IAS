@@ -6,10 +6,10 @@ This class is used for simulating the processor.
 @data 13/01/24
 """
 
-from Control import Control
-from Memory import Memory
-from Utilities import *
-from ProcessorSupport import *
+from IMT2023513_Control import Control
+from IMT2023513_Memory import Memory
+from IMT2023513_Utilities import *
+from IMt2023513_ProcessorSupport import *
 
 class Processor:
     """
