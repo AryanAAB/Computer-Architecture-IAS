@@ -14,7 +14,7 @@ _start
 
     499 100;    //Starting constant
     500 101;    //Start address
-    502 0;      //End address to be filled by user
+    501 0;      //End address to be filled by user
     503 1;      //constant 1
     1000 0;     //Stores the value to check (to be filled by user)
 
@@ -51,7 +51,7 @@ _start
 
     //Sets the ending value for binary search
     47 LOAD M(80); ADD M(499);
-    48 STOR M(502); NOP;
+    48 STOR M(501); NOP;
 
     //Sets the value that the user wants to find
     49 INP M(1000); JUMP M(1,0:19);
