@@ -48,10 +48,27 @@ class Assembler():
                 i+=1
             return lines
 
+        
+        included=[]
         for j in range(len(lines)):
+            
             i=lines[j].strip().split("//")[0]
+            
+            if i.startswith("_include"):
+                i=i.strip()
+                i=i.lstrip("_include")
+                i=i.strip()
+                i=i.strip('"')
+                a1=Assembler(i)
+                included.append(a1.run(1))
+            
             if i=="_start":
-                return start(lines[j+1:])
+                included.append(start(lines[j+1:]))
+                ans=[]
+                for k in included:
+                    ans=ans+i
+                return ans
+
         return lines
 
 
