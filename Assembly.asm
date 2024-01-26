@@ -12,6 +12,9 @@ _start
     25 ADD M(503); STOR M(81);                    //Decreases temp memory by one and stores it there
     26 JUMP M(21,20:39); NOP;                     //Goes back to first instruction
 
+    //Displaying output
+    17 DISP M(999); HALT;
+
     //Pre-Defined values and important locations
 
     80 0;       //Array length to be filled by user
