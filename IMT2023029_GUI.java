@@ -182,7 +182,7 @@ class Manager extends JPanel
 
 class Button extends JButton implements ActionListener
 {
-    private OutputReader read;                                  //Stores a reader object which reads the output file.
+    private GUI_OutputReader read;                                  //Stores a reader object which reads the output file.
 
     public static final String FILE_PATH = "Output.txt";        //File Path of the output file.
 
@@ -198,7 +198,7 @@ class Button extends JButton implements ActionListener
         this.setFont(IMT2023029_GUI.DEFAULT_FONT);
         this.setText("NEXT");
 
-        read = new OutputReader("Output.txt");
+        read = new GUI_OutputReader("Output.txt");
 
         this.addActionListener(this);
     }
